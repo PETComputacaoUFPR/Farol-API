@@ -12,6 +12,7 @@ O Farol tem como objetivo ser o repositório digital de provas e trabalhos. Voc�
     * Se você quer baixar apenas as necessárias para funcionar execute `npm install --production` e `bower install --production` (estes comandos podem precisar ser executados como sudo).
     * Se você quer baixar as dependências para desenvolvimento, execute os comandos acima sem a flag `--production`
 * Crie um link para uma pasta visível pelo Apache ou outro servidor a escolha
+
 Caso você faça uma alteração, solicite um merge request e explicite no corpo da mensagem que alterações foram feitas e porque.
 
 ## TODO:
