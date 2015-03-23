@@ -1,0 +1,32 @@
+{
+  "name": "Farol",
+  "version": "0.0.0",
+  "authors": [
+    "VytorCalixto <vytorcalixto@gmail.com>"
+  ],
+  "description": "Repositório de provas e trabalhos",
+  "main": "./public/index.html",
+  "moduleType": [
+    "node"
+  ],
+  "keywords": [
+    "php",
+    "site"
+  ],
+  "license": "MIT",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "components-font-awesome": "~4.3.0",
+    "jquery": "~2.1.3"
+  },
+  "devDependencies": {
+    "gulp": "~3.8.11"
+  }
+}
