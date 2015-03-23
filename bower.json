@@ -2,7 +2,7 @@
   "name": "Farol",
   "version": "0.0.0",
   "authors": [
-    "VytorCalixto <vytorcalixto@gmail.com>"
+    "PET Computação UFPR <pet@inf.ufpr.br>"
   ],
   "description": "Repositório de provas e trabalhos",
   "main": "./public/index.html",
