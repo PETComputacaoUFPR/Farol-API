@@ -1,0 +1,99 @@
+@import "mixin";
+@import url(http://fonts.googleapis.com/css?family=Montserrat);
+@import url(http://fonts.googleapis.com/css?family=Merriweather);
+//Colors
+$crimson:#EE3437;//#cd1e3d;
+$nautical: #1E2251; //#354069;
+$deep-sea:#39628d;
+$aqua:#bfdede;
+$gray:#808080;
+$squid-ink:#1a1a1a;
+//Font
+$font-size: 1.3em;
+
+body{
+	color: $squid-ink;
+	padding-bottom: 80px;
+	text-align: center;
+}
+
+.content{
+	background-image: url(../imgs/lighthouse.jpg);
+	background-position: center center;
+	background-size: contain;
+	background-repeat: no-repeat;
+	padding-top: 20%;
+	height: 100%;
+	h1{
+		font-family: 'Montserrat', sans-serif;
+		font-size: 2.5em;
+		text-transform: uppercase;
+		color: $nautical;
+		text-shadow: 0px 0px 5px white;
+	}
+}
+
+form{
+	margin: 0 auto;
+}
+
+.search-bar{
+	background-color: rgba(255,255,255,0.9);
+	box-shadow: inset 0px 1px 3px #ddd;
+	font-size: $font-size;
+	border: none;
+	width: 50%;
+	padding: 5px;
+	&:focus{
+		border: none !important;
+	}
+}
+
+.search-button{
+	border: none;
+	font-family: FontAwesome;
+	font-size: $font-size;
+	position: relative;
+	left: -6px;
+	background-color: $nautical;
+	color: white;
+	padding: 6px;
+	@include transition(background-color, 0.2s, ease-in-out);
+
+	&:hover{
+		background-color: $aqua;
+		color:$nautical;
+		@include transition(all, 0.2s, ease-in-out);
+	}
+}
+
+footer{
+	color: white;
+	background-color: $crimson;
+	position: fixed;
+	left:0;
+	bottom:0;
+	width:100%;
+	height: 80px;
+}
+
+.upload-link{
+	color: $deep-sea;
+	text-decoration: underline;
+	&:hover{
+		cursor: pointer;
+		color: $nautical;
+	}
+}
+
+.button{
+	color: white;
+	background-color: $deep-sea;
+	border: none;
+	font-size: 110%;
+	padding: 5px;
+}
+
+.cancel{
+	background-color: $crimson;
+}

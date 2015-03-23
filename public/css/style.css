@@ -1,0 +1,82 @@
+@import url(http://fonts.googleapis.com/css?family=Montserrat);
+@import url(http://fonts.googleapis.com/css?family=Merriweather);
+body {
+  color: #1a1a1a;
+  padding-bottom: 80px;
+  text-align: center; }
+
+.content {
+  background-image: url(../imgs/lighthouse.jpg);
+  background-position: center center;
+  background-size: contain;
+  background-repeat: no-repeat;
+  padding-top: 20%;
+  height: 100%; }
+  .content h1 {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 2.5em;
+    text-transform: uppercase;
+    color: #1E2251;
+    text-shadow: 0px 0px 5px white; }
+
+form {
+  margin: 0 auto; }
+
+.search-bar {
+  background-color: rgba(255, 255, 255, 0.9);
+  box-shadow: inset 0px 1px 3px #ddd;
+  font-size: 1.3em;
+  border: none;
+  width: 50%;
+  padding: 5px; }
+  .search-bar:focus {
+    border: none !important; }
+
+.search-button {
+  border: none;
+  font-family: FontAwesome;
+  font-size: 1.3em;
+  position: relative;
+  left: -6px;
+  background-color: #1E2251;
+  color: white;
+  padding: 6px;
+  -webkit-transition: background-color 0.2s ease-in-out;
+  -moz-transition: background-color 0.2s ease-in-out;
+  -ms-transition: background-color 0.2s ease-in-out;
+  -o-transition: background-color 0.2s ease-in-out;
+  transition: background-color 0.2s ease-in-out; }
+  .search-button:hover {
+    background-color: #bfdede;
+    color: #1E2251;
+    -webkit-transition: all 0.2s ease-in-out;
+    -moz-transition: all 0.2s ease-in-out;
+    -ms-transition: all 0.2s ease-in-out;
+    -o-transition: all 0.2s ease-in-out;
+    transition: all 0.2s ease-in-out; }
+
+footer {
+  color: white;
+  background-color: #EE3437;
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: 80px; }
+
+.upload-link {
+  color: #39628d;
+  text-decoration: underline; }
+  .upload-link:hover {
+    cursor: pointer;
+    color: #1E2251; }
+
+.button {
+  color: white;
+  background-color: #39628d;
+  border: none;
+  font-size: 110%;
+  padding: 5px; }
+
+.cancel {
+  background-color: #EE3437; }

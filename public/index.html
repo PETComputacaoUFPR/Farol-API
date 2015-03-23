@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Farol - Repositório de provas e trabalhos</title>
+    <link rel="stylesheet" href="../bower_components/components-font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="css/style.min.css">
+    <script src="../bower_components/jquery/dist/jquery.min.js"></script>
+    <script src="../vex-2.2.1/js/vex.combined.min.js"></script>
+	<script>vex.defaultOptions.className = 'vex-theme-plain';</script>
+	<link rel="stylesheet" href="../vex-2.2.1/css/vex.css" />
+	<link rel="stylesheet" href="../vex-2.2.1/css/vex-theme-plain.css" />
+</head>
+<body>
+	<section class="content">
+		<h1>Farol</h1>
+		<form action="search.php" method="get">
+			<input type="text" placeholder="O que você está procurando?" name="search" class="search-bar" autofocus required>
+			<!-- Value do submit foi retirado daqui: http://fortawesome.github.io/Font-Awesome/cheatsheet/-->
+			<input type="submit" class="search-button" value="&#xf002;">
+		</form>
+	</section>
+	<p><a id="upload" class="upload-link">Faça o upload de uma prova/trabalho!</a></p>
+	<script>
+	$("#upload").click(function(){
+		vex.open({
+			content: '<h1>Upload de arquivo</h1> <form action="upload.php" method="post" enctype="multipart/form-data"> <input type="file" name="file" id="file" required> <br/> <input type="submit" class="button" value="Enviar"> </form>',
+			afterOpen: function($vexContent) {
+				// return $vexContent.append($el);
+			},
+			afterClose: function() {
+				// return console.log('vexClose');
+			},
+			showCloseButton: false
+		});
+	});
+	</script>
+	<footer>
+		<p>PET Computação UFPR<br/>
+		&copy; 2015
+		</p>
+	</footer>
+</body>
+</html>
