@@ -92,6 +92,9 @@ footer{
 	border: none;
 	font-size: 110%;
 	padding: 5px;
+	&:hover{
+		cursor: pointer;
+	}
 }
 
 .cancel{
