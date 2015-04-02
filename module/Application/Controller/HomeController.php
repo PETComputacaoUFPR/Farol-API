@@ -5,7 +5,7 @@ use FrameworkMvc\Mvc\Controller;
 use ProvaTrabalho\Model\ProvaTrabalho;
 
 class HomeController extends Controller{
-    
+    private $viewData;
     private $uploadDir = "uploads/";
     
     public function indexAction(){
@@ -13,57 +13,60 @@ class HomeController extends Controller{
     }
     
     public function searchAction(){
-        $viewData = array();
+        $this->viewData = array();
         $search = "";
         if(isset($_POST['search'])){
             $search = $_POST['search'];
         }
-        $viewData['search'] = $search;
-        return $viewData;
+        $this->viewData['search'] = $search;
+        return $this->viewData;
     }
     
     public function uploadAction(){
-        $viewData = array();
+        $this->viewData = array();
         //Array que guarda todas os arquivos enviados com sucesso
         $uploadedFiles = array();
         if(!empty($_POST)){
             //Reorganiza o array de arquivos
             $files = $this->reorganizeArrayFiles($_FILES['file']);
-            
+
             foreach($files as $file){
-                $tmpFile = $file['tmp_name'];
-                $nome = $file['name'];
-                //Extensão do arquivo
-                $extensao = strrchr($nome, '.');
-                $extensao = strtolower($extensao);
-                
-                //Checa se é um arquivo com extensão válida (talvez seja melhor checar pelo type)
-                if(strstr('.jpg;.jpeg;.gif;.png;.pdf', $extensao))
-                {
-                    // Cria um nome único para esta imagem
-                    // Evita que duplique as imagens no servidor.
-                    $novoNome = md5(microtime()) . $extensao;
-                     
-                    // Concatena a pasta com o nome
-                    $destino = $this->uploadDir.$novoNome;
-                     
-                    // tenta mover o arquivo para o destino
-                    if(move_uploaded_file($tmpFile, $destino))
+                if($file['error'] == 0){
+                    $tmpFile = $file['tmp_name'];
+                    $nome = $file['name'];
+                    //Extensão do arquivo
+                    $extensao = strrchr($nome, '.');
+                    $extensao = strtolower($extensao);
+                    
+                    //Checa se é um arquivo com extensão válida (talvez seja melhor checar pelo type)
+                    if(strstr('.jpg;.jpeg;.gif;.png;.pdf', $extensao))
                     {
-                        //echo "<img src=\"" . $destino . "\" />";
-                        $arquivo = new ProvaTrabalho();
-                        $arquivo->setArquivo($destino);
-                        $arquivo->setImage(($extensao != ".pdf"));
-                        $uploadedFiles[] = $arquivo;
-                    }
-                    else{
-                        echo "<h1>Erro ao salvar o arquivo</h1>";
+                        // Cria um nome único para esta imagem
+                        // Evita que duplique as imagens no servidor.
+                        $novoNome = md5(microtime()) . $extensao;
+                         
+                        // Concatena a pasta com o nome
+                        $destino = $this->uploadDir.$novoNome;
+                        // tenta mover o arquivo para o destino
+                        if(move_uploaded_file($tmpFile, $destino))
+                        {
+                            //echo "<img src=\"" . $destino . "\" />";
+                            $arquivo = new ProvaTrabalho();
+                            $arquivo->setArquivo($destino);
+                            $arquivo->setImage(($extensao != ".pdf"));
+                            $arquivo->setNome($nome);
+                            $uploadedFiles[] = $arquivo;
+                        }
+                        else{
+                            echo "<pre> ${print_r($file)} </pre>";
+                            echo "<h1>Erro ao salvar o arquivo</h1>";
+                        }
                     }
                 }
             }
+            $this->viewData['files'] = $uploadedFiles;
         }
-        $viewData['files'] = $uploadedFiles;
-        return $viewData;
+        return $this->viewData;
     }
     
     /**

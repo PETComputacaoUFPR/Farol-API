@@ -1,6 +1,7 @@
 @import url(https://fonts.googleapis.com/css?family=Montserrat);
 @import url(https://fonts.googleapis.com/css?family=Merriweather);
 body {
+  font-family: Merriweather, serif;
   color: #1a1a1a;
   padding-bottom: 80px;
   text-align: center;

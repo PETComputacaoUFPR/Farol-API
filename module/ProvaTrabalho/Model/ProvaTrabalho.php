@@ -4,6 +4,8 @@ namespace ProvaTrabalho\Model;
 
 class ProvaTrabalho{
     private $id;
+    //Nome original do arquivo
+    private $nome;
     //Prova ou trabalho
     private $provaTrabalho;
     //Prova 1 ou 2 ou final, trabalho 1 ou 2 ou final
@@ -15,6 +17,8 @@ class ProvaTrabalho{
     private $status;
     //É imagem ou não
     private $image;
+    private $professor;
+    private $materia;
     
     public function getId(){
         return $this->id;
@@ -22,6 +26,15 @@ class ProvaTrabalho{
     
     public function setId($id){
         $this->id = $id;
+        return $this;
+    }
+    
+    public function getNome(){
+        return $this->nome;
+    }
+    
+    public function setNome($nome){
+        $this->nome = $nome;
         return $this;
     }
     
@@ -75,6 +88,24 @@ class ProvaTrabalho{
     
     public function setImage($image){
         $this->image = $image;
+        return $this;
+    }
+    
+    public function getProfessor(){
+        return $this->professor;
+    }
+    
+    public function setProfessor($professor){
+        $this->professor = $professor;
+        return $this;
+    }
+    
+    public function getMateria(){
+        return $this->materia;
+    }
+    
+    public function setMateria($materia){
+        $this->materia = $materia;
         return $this;
     }
 }
