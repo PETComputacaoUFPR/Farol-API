@@ -1,12 +1,14 @@
-@import url(http://fonts.googleapis.com/css?family=Montserrat);
-@import url(http://fonts.googleapis.com/css?family=Merriweather);
+@import url(https://fonts.googleapis.com/css?family=Montserrat);
+@import url(https://fonts.googleapis.com/css?family=Merriweather);
 body {
   color: #1a1a1a;
   padding-bottom: 80px;
-  text-align: center; }
+  text-align: center;
+  margin: 0;
+  background-color: #F5F5F5; }
 
 .content {
-  background-image: url(../imgs/lighthouse.jpg);
+  background-image: url(../imgs/lighthouse.png);
   background-position: center center;
   background-size: contain;
   background-repeat: no-repeat;
@@ -32,11 +34,50 @@ form {
   .search-bar:focus {
     border: none !important; }
 
-.search-button {
+.button {
+  color: white;
+  background-color: #39628d;
+  border: none;
+  font-size: 110%;
+  padding: 5px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  -webkit-transition: background-color 0.2s ease;
+  -moz-transition: background-color 0.2s ease;
+  -ms-transition: background-color 0.2s ease;
+  -o-transition: background-color 0.2s ease;
+  transition: background-color 0.2s ease; }
+  .button:hover {
+    cursor: pointer; }
+  .button:active {
+    background-color: #bfdede;
+    -webkit-transition: background-color 0.2s ease-out;
+    -moz-transition: background-color 0.2s ease-out;
+    -ms-transition: background-color 0.2s ease-out;
+    -o-transition: background-color 0.2s ease-out;
+    transition: background-color 0.2s ease-out; }
+
+.button-hover-shadow {
+  box-shadow: 0px 0px 0px rgba(0, 0, 0, 0.6);
+  -webkit-transition: box-shadow 0.2s ease-in-out;
+  -moz-transition: box-shadow 0.2s ease-in-out;
+  -ms-transition: box-shadow 0.2s ease-in-out;
+  -o-transition: box-shadow 0.2s ease-in-out;
+  transition: box-shadow 0.2s ease-in-out; }
+  .button-hover-shadow:hover {
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.6);
+    -webkit-transition: box-shadow 0.2s ease-in-out;
+    -moz-transition: box-shadow 0.2s ease-in-out;
+    -ms-transition: box-shadow 0.2s ease-in-out;
+    -o-transition: box-shadow 0.2s ease-in-out;
+    transition: box-shadow 0.2s ease-in-out; }
+
+.search-button, .search-button-inverse {
   border: none;
   font-family: FontAwesome;
-  font-size: 1.3em;
+  font-size: 1.403em;
   position: relative;
+  top: 1.23px;
   left: -6px;
   background-color: #1E2251;
   color: white;
@@ -46,7 +87,7 @@ form {
   -ms-transition: background-color 0.2s ease-in-out;
   -o-transition: background-color 0.2s ease-in-out;
   transition: background-color 0.2s ease-in-out; }
-  .search-button:hover {
+  .search-button:hover, .search-button-inverse:hover {
     background-color: #bfdede;
     color: #1E2251;
     -webkit-transition: all 0.2s ease-in-out;
@@ -54,6 +95,10 @@ form {
     -ms-transition: all 0.2s ease-in-out;
     -o-transition: all 0.2s ease-in-out;
     transition: all 0.2s ease-in-out; }
+
+.search-button-inverse {
+  background-color: #EE3437;
+  left: -5px; }
 
 footer {
   color: white;
@@ -71,14 +116,35 @@ footer {
     cursor: pointer;
     color: #1E2251; }
 
-.button {
-  color: white;
-  background-color: #39628d;
-  border: none;
-  font-size: 110%;
-  padding: 5px; }
-  .button:hover {
-    cursor: pointer; }
-
 .cancel {
   background-color: #EE3437; }
+
+.uploadInfo {
+  box-shadow: 2px 2px 15px rgba(0, 0, 0, 0.4);
+  background-color: white;
+  width: 200px;
+  margin: 5px 15px 5px 15px;
+  display: inline-block; }
+
+.uploadThumb {
+  max-width: 100%; }
+
+.header {
+  box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.6);
+  font-family: Montserrat, sans-serif;
+  padding: 5px 0 5px 0;
+  background-color: #1E2251;
+  color: white; }
+
+.header-search {
+  text-align: left;
+  padding: 21px 0px 21px 10px; }
+  .header-search h2, .header-search form {
+    display: inline-block; }
+  .header-search form .search-bar {
+    width: 400px; }
+  .header-search h2 a {
+    color: white;
+    text-decoration: none; }
+    .header-search h2 a:hover {
+      text-decoration: underline; }

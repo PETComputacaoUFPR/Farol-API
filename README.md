@@ -1,6 +1,6 @@
 # Farol
 ### Repositório de provas e trabalhos
-
+[![Gitter](https://badges.gitter.im/VytorCalixto/pet-farol.svg)](https://gitter.im/VytorCalixto/pet-farol)
 ![lighthouse](https://d13yacurqjgara.cloudfront.net/users/195056/screenshots/873094/lighthouse.jpg)
 
 ## Sobre este projeto
@@ -9,6 +9,7 @@ O Farol tem como objetivo ser o repositório digital de provas e trabalhos. Voc�
 ## Baixando e contribuindo
 * Baixe o repositório com `git clone git@gitlab.c3sl.ufpr.br:pet/farol`
 * Baixe as dependências:
+    * `composer install` para baixar o FrameworkMVC
     * Se você quer baixar apenas as necessárias para funcionar execute `npm install --production` e `bower install --production` (estes comandos podem precisar ser executados como sudo).
     * Se você quer baixar as dependências para desenvolvimento, execute os comandos acima sem a flag `--production`
 * Crie um link para uma pasta visível pelo Apache ou outro servidor a escolha

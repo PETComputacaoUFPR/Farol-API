@@ -1,4 +1,7 @@
 bower_components/
 node_modules/
 *.log
-uploads/*
+.c9/
+vendor/
+*.lock
+

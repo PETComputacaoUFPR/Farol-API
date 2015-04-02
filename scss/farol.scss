@@ -1,12 +1,13 @@
 @import "mixin";
-@import url(http://fonts.googleapis.com/css?family=Montserrat);
-@import url(http://fonts.googleapis.com/css?family=Merriweather);
+@import url(https://fonts.googleapis.com/css?family=Montserrat);
+@import url(https://fonts.googleapis.com/css?family=Merriweather);
 //Colors
 $crimson:#EE3437;//#cd1e3d;
 $nautical: #1E2251; //#354069;
 $deep-sea:#39628d;
 $aqua:#bfdede;
 $gray:#808080;
+$light-gray: #F5F5F5;
 $squid-ink:#1a1a1a;
 //Font
 $font-size: 1.3em;
@@ -15,10 +16,12 @@ body{
 	color: $squid-ink;
 	padding-bottom: 80px;
 	text-align: center;
+	margin: 0;
+	background-color: $light-gray;
 }
 
 .content{
-	background-image: url(../imgs/lighthouse.jpg);
+	background-image: url(../imgs/lighthouse.png);
 	background-position: center center;
 	background-size: contain;
 	background-repeat: no-repeat;
@@ -49,11 +52,39 @@ form{
 	}
 }
 
+.button{
+	color: white;
+	background-color: $deep-sea;
+	border: none;
+	font-size: 110%;
+	padding: 5px;
+	margin-top: 10px;
+	margin-bottom: 10px;
+	@include transition(background-color, 0.2s, ease);
+	&:hover{
+		cursor: pointer;
+	}
+	&:active{
+		background-color:$aqua;
+		@include transition(background-color, 0.2s, ease-out);
+	}
+}
+
+.button-hover-shadow{
+	box-shadow: 0px 0px 0px rgba(0, 0, 0, 0.6);
+	@include transition(box-shadow, 0.2s, ease-in-out);
+	&:hover{
+		box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.6);
+		@include transition(box-shadow, 0.2s, ease-in-out);
+	}
+}
+
 .search-button{
 	border: none;
 	font-family: FontAwesome;
-	font-size: $font-size;
+	font-size: $font-size + 0.103em;
 	position: relative;
+	top: 1.23px;
 	left: -6px;
 	background-color: $nautical;
 	color: white;
@@ -65,6 +96,12 @@ form{
 		color:$nautical;
 		@include transition(all, 0.2s, ease-in-out);
 	}
+}
+
+.search-button-inverse{
+	@extend .search-button;
+	background-color: $crimson;
+	left: -5px;
 }
 
 footer{
@@ -86,17 +123,48 @@ footer{
 	}
 }
 
-.button{
-	color: white;
-	background-color: $deep-sea;
-	border: none;
-	font-size: 110%;
-	padding: 5px;
-	&:hover{
-		cursor: pointer;
-	}
-}
-
 .cancel{
 	background-color: $crimson;
+}
+
+.uploadInfo{
+	box-shadow: 2px 2px 15px rgba(0, 0, 0, 0.4);
+	background-color: white;
+	width: 200px;
+	margin: 5px 15px 5px 15px;
+	display: inline-block;
+}
+
+.uploadThumb{
+	max-width: 100%;
+}
+
+.header{
+	box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.6);
+	font-family: Montserrat, sans-serif;
+	padding: 5px 0 5px 0;
+	background-color: $nautical;
+	color: white;
+}
+
+.header-search{
+	text-align: left;
+	padding: 21px 0px 21px 10px;
+	h2, form{
+		display: inline-block;
+	}
+	form{
+		.search-bar{
+			width: 400px;
+		}
+	}
+	h2{
+		a{
+			color: white;
+			text-decoration: none;
+			&:hover{
+				text-decoration: underline;
+			}
+		}
+	}
 }
