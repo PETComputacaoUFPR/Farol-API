@@ -130,6 +130,11 @@ footer {
 .uploadThumb {
   max-width: 100%; }
 
+.thumb {
+  height: 75px;
+  border: 1px solid #bfdede;
+  margin: 10px 5px 0 0; }
+
 .header {
   box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.6);
   font-family: Montserrat, sans-serif;

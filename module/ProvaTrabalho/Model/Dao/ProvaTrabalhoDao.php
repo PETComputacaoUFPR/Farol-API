@@ -8,7 +8,7 @@ class ProvaTrabalhoDao extends GenericDao{
     }
     
     protected function getModelClassName(){
-        return 'ContaBancaria\Model\ContaBancaria';
+        return 'ProvaTrabalho\Model\ProvaTrabalho';
     }
     
     protected function getAutoIncrementedColumns(){
