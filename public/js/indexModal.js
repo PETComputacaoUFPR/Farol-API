@@ -8,7 +8,7 @@ $("#upload").click(function(){
 		'<h6>Tamanho máximo de 15Mb por arquivo</h6>'+
 		'<input type="file" name="file[]" id="file" multiple required> '+
 		'<br/><output id="list"></output>'+
-		'<br/> <input type="submit" class="button" value="Enviar" style="margin-top:15px"> </form>',
+		'<br/> <input type="submit" class="button normal" value="Enviar" style="margin-top:15px"> </form>',
 		afterOpen: function($vexContent) {
 			$("#file").change(handleFileSelect);
 		},

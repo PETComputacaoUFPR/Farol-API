@@ -1,7 +1,7 @@
 <form method="post" id="save">
-    <header class="header">
+    <header>
         <h1>Farol</h1>
-        <button class="button" type="button" onclick="enviar(<?php echo count($this->data['files']);?>)">Enviar</button>
+        <button class="button normal float-right float-button margin-horizontal" type="button" onclick="enviar(<?php echo count($this->data['files']);?>)">Enviar</button>
     </header>
     <section>
             <?php
@@ -14,7 +14,7 @@
                         <img src="<?php echo $file->getArquivo(); ?>" class="uploadThumb"/>
                     </div>
                     <div>
-                        <button type="button" id="bt-<?php echo $i; ?>" onclick="openModal<?php echo $i; ?>('<?php echo $file->getNome(); ?>')" class="button button-hover-shadow">Adicionar informações</button>
+                        <button type="button" id="bt-<?php echo $i; ?>" onclick="openModal<?php echo $i; ?>('<?php echo $file->getNome(); ?>')" class="button normal hover-shadow">Adicionar informações</button>
                     </div>
                 </div>
                 <script>
@@ -33,7 +33,7 @@
                     		'<label for="final"><input type="radio" name="numero" id="final" value="final">Final</label>'+
                     		'<br/>Substitutiva? <label for="sim"><input type="radio" id="sim" name="substitutiva" value="1" required>Sim</label>'+
                     		'<label for="nao"><input type="radio" id="nao" name="substitutiva" value="0" required>Não</label>'+
-                    		'<br/> <button type="button" onclick="closeVex('+i+')" class="button button-hover-shadow">OK</button>',
+                    		'<br/> <button type="button" onclick="closeVex('+i+')" class="button normal hover-shadow">OK</button>',
                     		afterOpen: function($vexContent) {
                     		    if(localStorage['file-'+i] != undefined){
                     		        var file = JSON.parse(localStorage['file-'+i]);
@@ -93,7 +93,7 @@
     		    file['numero'] = $("input[name='numero']:checked").val();
     		    file['substitutiva'] = $("input[name='substitutiva']:checked").val();
     		    localStorage['file-'+i] = JSON.stringify(file);
-    		    $('#bt-'+i).text("Editar informações");
+    		    $('#bt-'+i).text("Editar informações").removeClass('normal').addClass('light');
                 vex.close($vexContent.data().vex.id);
             }
             
@@ -101,7 +101,14 @@
                 var postFiles = {};
                 if(localStorage.length < numFiles){
                     //Mostra uma mesagem de erro e retorna
-                    vex.dialog.alert("Preencha as informações de todos os arquivos");
+                    vex.dialog.alert({
+                        message: "Preencha as informações de todos os arquivos!",
+                        buttons: [{
+                            type: 'submit',
+                            text: 'OK',
+                            className: 'error vex-dialog-button-primary'
+                        }]
+                    });
                     return;
                 }
                 var i = 0;

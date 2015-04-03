@@ -1,0 +1,39 @@
+.button{
+    color: white !important;
+	border: none;
+	font-size: 110%;
+	padding: 5px;
+	margin-top: 10px;
+	margin-bottom: 10px;
+	@include transition(background-color, 0.2s, ease);
+	&:hover{
+		cursor: pointer;
+	}
+	&:active{
+		@extend .light;
+		@include transition(background-color, 0.2s, ease-out);
+	}
+}
+
+.float-button{
+	position: relative; 
+	top: -1.3em;
+}
+
+.icon-button{
+    @extend .button;
+	font-family: FontAwesome;
+	font-size: $font-size + 0.103em;
+	position: relative;
+	top: 1.23px;
+	left: -5px;
+	color: white;
+	padding: 6px;
+	@include transition(background-color, 0.2s, ease-in-out);
+
+	/*&:hover{
+		@extend .light;
+		color: $nautical !important;
+		@include transition(all, 0.2s, ease-in-out);
+	}*/
+}

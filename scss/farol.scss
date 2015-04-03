@@ -1,16 +1,13 @@
-@import "mixin";
+//Fonts
 @import url(https://fonts.googleapis.com/css?family=Montserrat);
 @import url(https://fonts.googleapis.com/css?family=Merriweather);
-//Colors
-$crimson:#EE3437;//#cd1e3d;
-$nautical: #1E2251; //#354069;
-$deep-sea:#39628d;
-$aqua:#bfdede;
-$gray:#808080;
-$light-gray: #F5F5F5;
-$squid-ink:#1a1a1a;
-//Font
 $font-size: 1.3em;
+
+//Imports
+@import "mixin";
+@import "colors";
+@import "positioning";
+@import "buttons";
 
 body{
 	font-family: Merriweather, serif;
@@ -18,10 +15,41 @@ body{
 	padding-bottom: 80px;
 	text-align: center;
 	margin: 0;
-	background-color: $light-gray;
+	@extend .lighter;
 }
 
-.content{
+a{
+	color: $deep-sea;
+	text-decoration: underline;
+	&:hover{
+		cursor: pointer;
+		color: $nautical;
+	}
+}
+
+form{
+	margin: 0 auto;
+}
+
+header{
+	@extend .dark;
+	box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.6);
+	font-family: Montserrat, sans-serif;
+	padding: 5px 0 5px 0;
+	color: white;
+}
+
+footer{
+	@extend .red;
+	color: white;
+	position: fixed;
+	left:0;
+	bottom:0;
+	width:100%;
+	height: 80px;
+}
+
+.index{
 	background-image: url(../imgs/lighthouse.png);
 	background-position: center center;
 	background-size: contain;
@@ -37,10 +65,6 @@ body{
 	}
 }
 
-form{
-	margin: 0 auto;
-}
-
 .search-bar{
 	background-color: rgba(255,255,255,0.9);
 	box-shadow: inset 0px 1px 3px #ddd;
@@ -51,81 +75,6 @@ form{
 	&:focus{
 		border: none !important;
 	}
-}
-
-.button{
-	color: white;
-	background-color: $deep-sea;
-	border: none;
-	font-size: 110%;
-	padding: 5px;
-	margin-top: 10px;
-	margin-bottom: 10px;
-	@include transition(background-color, 0.2s, ease);
-	&:hover{
-		cursor: pointer;
-	}
-	&:active{
-		background-color:$aqua;
-		@include transition(background-color, 0.2s, ease-out);
-	}
-}
-
-.button-hover-shadow{
-	box-shadow: 0px 0px 0px rgba(0, 0, 0, 0.6);
-	@include transition(box-shadow, 0.2s, ease-in-out);
-	&:hover{
-		box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.6);
-		@include transition(box-shadow, 0.2s, ease-in-out);
-	}
-}
-
-.search-button{
-	border: none;
-	font-family: FontAwesome;
-	font-size: $font-size + 0.103em;
-	position: relative;
-	top: 1.23px;
-	left: -6px;
-	background-color: $nautical;
-	color: white;
-	padding: 6px;
-	@include transition(background-color, 0.2s, ease-in-out);
-
-	&:hover{
-		background-color: $aqua;
-		color:$nautical;
-		@include transition(all, 0.2s, ease-in-out);
-	}
-}
-
-.search-button-inverse{
-	@extend .search-button;
-	background-color: $crimson;
-	left: -5px;
-}
-
-footer{
-	color: white;
-	background-color: $crimson;
-	position: fixed;
-	left:0;
-	bottom:0;
-	width:100%;
-	height: 80px;
-}
-
-.upload-link{
-	color: $deep-sea;
-	text-decoration: underline;
-	&:hover{
-		cursor: pointer;
-		color: $nautical;
-	}
-}
-
-.cancel{
-	background-color: $crimson;
 }
 
 .uploadInfo{
@@ -144,14 +93,6 @@ footer{
     height: 75px;
     border: 1px solid $aqua;
     margin: 10px 5px 0 0;
-}
-
-.header{
-	box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.6);
-	font-family: Montserrat, sans-serif;
-	padding: 5px 0 5px 0;
-	background-color: $nautical;
-	color: white;
 }
 
 .header-search{
@@ -178,4 +119,13 @@ footer{
 
 .warning{
 	border: 1px solid $crimson;
+}
+
+.hover-shadow{
+	box-shadow: 0px 0px 0px rgba(0, 0, 0, 0.6);
+	@include transition(box-shadow, 0.2s, ease-in-out);
+	&:hover{
+		box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.6);
+		@include transition(box-shadow, 0.2s, ease-in-out);
+	}
 }
