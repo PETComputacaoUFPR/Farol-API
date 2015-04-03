@@ -154,3 +154,6 @@ footer {
     text-decoration: none; }
     .header-search h2 a:hover {
       text-decoration: underline; }
+
+.warning {
+  border: 1px solid #EE3437; }

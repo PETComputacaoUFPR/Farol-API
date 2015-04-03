@@ -29,6 +29,7 @@ class HomeController extends Controller{
         if(!empty($_POST)){
             //Reorganiza o array de arquivos
             $files = $this->reorganizeArrayFiles($_FILES['file']);
+            echo "<script type='text/javascript'>localStorage.clear()</script>";
 
             foreach($files as $file){
                 if($file['error'] == 0){
@@ -66,6 +67,16 @@ class HomeController extends Controller{
             }
             $this->viewData['files'] = $uploadedFiles;
         }
+        return $this->viewData;
+    }
+    
+    public function saveAction(){
+        $this->viewData = array();
+        if(!empty($_POST)){
+            echo "<pre> ${print_r($_POST)} </pre>";
+            $this->viewData['post'] = $_POST;
+        }
+        //header("location:?module=application&controller=home&action=index");
         return $this->viewData;
     }
     
