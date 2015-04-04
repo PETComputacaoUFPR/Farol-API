@@ -10,6 +10,7 @@
     	<script>vex.defaultOptions.className = 'vex-theme-plain';</script>
     	<link rel="stylesheet" href="/vex-2.2.1/css/vex.css" />
     	<link rel="stylesheet" href="/vex-2.2.1/css/vex-theme-plain.css" />
+    	<link rel="shortcut icon" href="/public/imgs/favicon-anchor.ico" type="image/x-icon" />
     </head>
     <body>
         <?php

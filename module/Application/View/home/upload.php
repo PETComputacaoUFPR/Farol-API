@@ -1,6 +1,6 @@
 <form method="post" id="save">
     <header>
-        <h1>Farol</h1>
+        <h1><i class="fa fa-anchor"></i> Farol</h1>
         <button class="button normal float-right float-button margin-horizontal" type="button" onclick="enviar(<?php echo count($this->data['files']);?>)">Enviar</button>
     </header>
     <section>
