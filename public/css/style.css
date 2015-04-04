@@ -89,6 +89,7 @@
 .button, .icon-button {
   color: white !important;
   border: none;
+  border-radius: 2px;
   font-size: 110%;
   padding: 5px;
   margin-top: 10px;
@@ -129,6 +130,9 @@
 		color: $nautical !important;
 		@include transition(all, 0.2s, ease-in-out);
 	}*/ }
+
+.button-circle {
+  border-radius: 50%; }
 
 body {
   font-family: Merriweather, serif;
@@ -189,6 +193,12 @@ footer {
   .search-bar:focus {
     border: 1px solid #bfdede;
     outline: 0; }
+  .search-bar::-webkit-search-cancel-button {
+    -webkit-appearance: none; }
+    .search-bar::-webkit-search-cancel-button:after {
+      font-family: FontAwesome;
+      content: '\f00d';
+      color: #EE3437; }
 
 .uploadInfo {
   box-shadow: 2px 2px 15px rgba(0, 0, 0, 0.4);

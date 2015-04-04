@@ -2,7 +2,10 @@
 namespace Application\Controller;
 
 use FrameworkMvc\Mvc\Controller;
+use FrameworkMvc\Hydrator\Hydrator;
+use FrameworkMvc\Dao\Conexao;
 use ProvaTrabalho\Model\ProvaTrabalho;
+use ProvaTrabalho\Model\Dao\ProvaTrabalhoDao;
 
 class HomeController extends Controller{
     private $viewData;
@@ -29,7 +32,6 @@ class HomeController extends Controller{
         if(!empty($_POST)){
             //Reorganiza o array de arquivos
             $files = $this->reorganizeArrayFiles($_FILES['file']);
-            echo "<script type='text/javascript'>localStorage.clear()</script>";
 
             foreach($files as $file){
                 if($file['error'] == 0){
@@ -54,7 +56,7 @@ class HomeController extends Controller{
                             //echo "<img src=\"" . $destino . "\" />";
                             $arquivo = new ProvaTrabalho();
                             $arquivo->setArquivo($destino);
-                            $arquivo->setImage(($extensao != ".pdf"));
+                            $arquivo->setImagem(($extensao != ".pdf"));
                             $arquivo->setNome($nome);
                             $uploadedFiles[] = $arquivo;
                         }
@@ -71,12 +73,36 @@ class HomeController extends Controller{
     }
     
     public function saveAction(){
+        $hydrator = new Hydrator();
         $this->viewData = array();
-        if(!empty($_POST)){
-            echo "<pre> ${print_r($_POST)} </pre>";
-            $this->viewData['post'] = $_POST;
+        
+        if(isset($_POST['files'])){
+            $this->viewData['files'] = $_POST['files'];
+            //Array com arquivos que não foram inseridos
+            $erroInserir = array();
+            foreach($_POST['files'] as $file){
+                $provaTrabalho = new ProvaTrabalho();
+                $provaTrabalho = $hydrator->hydrate($file, $provaTrabalho);
+                //Status 0 = pendente
+                $provaTrabalho->setStatus(0);
+                $provaTrabalhoDao = new ProvaTrabalhoDao(Conexao::getInstance());
+                try{
+                    $result = $provaTrabalhoDao->inserir($provaTrabalho);
+                }catch(\Exception $ex){
+                    //Se deu erro ao inserir, deletamos e
+                    // mostramos ao usuário quais arquivos não foram salvos
+                    $erroInserir[] = $provaTrabalho;
+                }
+            }
+            
+            if(count($erroInserir) > 0){
+                foreach($erroInserir as $file){
+                unlink($file->getArquivo());
+                }
+                $this->viewData['erros'] = $erroInserir;
+            }
         }
-        //header("location:?module=application&controller=home&action=index");
+        
         return $this->viewData;
     }
     

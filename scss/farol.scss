@@ -87,6 +87,14 @@ footer{
 		border: 1px solid $aqua;
 		outline: 0;
 	}
+	&::-webkit-search-cancel-button{
+		-webkit-appearance: none;
+		&:after{
+			font-family: FontAwesome;
+			content:'\f00d';
+			color: $crimson;
+		}
+	}
 }
 
 .uploadInfo{

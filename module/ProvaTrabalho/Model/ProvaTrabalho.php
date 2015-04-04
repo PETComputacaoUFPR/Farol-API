@@ -11,9 +11,11 @@ class ProvaTrabalho{
     //Prova 1 ou 2 ou final, trabalho 1 ou 2 ou final
     private $numero;
     private $substitutiva;
+    private $ano;
+    private $semestre;
     //Caminho para o arquivo
     private $arquivo;
-    //Pendente ou aprovado
+    //Pendente ou aprovado (0, 1)
     private $status;
     //É imagem ou não
     private $imagem;
@@ -52,7 +54,7 @@ class ProvaTrabalho{
     }
     
     public function setNumero($numero){
-        $this->numero = numero;
+        $this->numero = $numero;
         return $this;
     }
     
@@ -60,8 +62,27 @@ class ProvaTrabalho{
         return $this->substitutiva;
     }
     
-    public function setSuvstitutiva($substitutiva){
+    public function setSubstitutiva($substitutiva){
         $this->substitutiva = $substitutiva;
+        return $this;
+    }
+    
+    public function getAno(){
+        return $this->ano;
+    }
+    
+    public function setAno($ano){
+        $this->ano = $ano;
+        return $this;
+    }
+    
+    public function getSemestre(){
+        return $this->semestre;
+    }
+    
+    public function setSemestre($semestre){
+        $this->semestre = $semestre;
+        return $this;
     }
     
     public function getArquivo(){

@@ -1,6 +1,7 @@
 .button{
     color: white !important;
 	border: none;
+	border-radius: 2px;
 	font-size: 110%;
 	padding: 5px;
 	margin-top: 10px;
@@ -36,4 +37,8 @@
 		color: $nautical !important;
 		@include transition(all, 0.2s, ease-in-out);
 	}*/
+}
+
+.button-circle{
+	border-radius: 50%;
 }
