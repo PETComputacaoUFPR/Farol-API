@@ -9,7 +9,7 @@
 <p><a id="upload" class="upload-link">Faça o upload de uma prova/trabalho!</a></p>
 <script type="text/javascript" src="public/js/indexModal.js"></script>
 <footer>
-	<p>PET Computação UFPR<br/>
+	<p><a href="//pet.inf.ufpr.br">PET Computação UFPR</a><br/>
 	&copy; 2015
 	</p>
 </footer>

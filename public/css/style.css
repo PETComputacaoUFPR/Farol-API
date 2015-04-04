@@ -160,6 +160,10 @@ footer {
   bottom: 0;
   width: 100%;
   height: 80px; }
+  footer a {
+    color: white; }
+    footer a:hover {
+      color: #1a1a1a; }
 
 .index {
   background-image: url(../imgs/lighthouse.png);
@@ -173,17 +177,18 @@ footer {
     font-size: 2.5em;
     text-transform: uppercase;
     color: #1E2251;
-    text-shadow: 0px 0px 5px white; }
+    text-shadow: -1px -1px 0 #F5F5F5, 1px -1px 0 #F5F5F5, -1px 1px 0 #F5F5F5, 1px 1px 0 #F5F5F5; }
 
 .search-bar {
   background-color: rgba(255, 255, 255, 0.9);
   box-shadow: inset 0px 1px 3px #ddd;
   font-size: 1.3em;
-  border: none;
   width: 50%;
-  padding: 5px; }
+  padding: 5px;
+  border: none; }
   .search-bar:focus {
-    border: none !important; }
+    border: 1px solid #bfdede;
+    outline: 0; }
 
 .uploadInfo {
   box-shadow: 2px 2px 15px rgba(0, 0, 0, 0.4);
