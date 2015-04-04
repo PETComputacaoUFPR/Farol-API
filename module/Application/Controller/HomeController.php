@@ -20,6 +20,8 @@ class HomeController extends Controller{
         $search = "";
         if(isset($_POST['search'])){
             $search = $_POST['search'];
+        }else if(isset($_GET['search'])){
+            $search = $_GET['search'];
         }
         $this->viewData['search'] = $search;
         return $this->viewData;
@@ -69,6 +71,7 @@ class HomeController extends Controller{
             }
             $this->viewData['files'] = $uploadedFiles;
         }
+        
         return $this->viewData;
     }
     
@@ -100,6 +103,8 @@ class HomeController extends Controller{
                 unlink($file->getArquivo());
                 }
                 $this->viewData['erros'] = $erroInserir;
+            }else{
+                header("location:?module=application&controller=home&action=index");
             }
         }
         

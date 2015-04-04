@@ -14,8 +14,10 @@
     </head>
     <body>
         <?php
-            if($_GET == array()){
+            if(empty($_GET)){
                 header("location:?module=application&controller=home&action=index");
+            }else if(isset($_GET['search']) && count($_GET) == 1){
+                header("location:?module=application&controller=home&action=search&search=".$_GET['search']);
             }
 	        ini_set('display_errors', 1);
 	        error_reporting(E_ALL);
