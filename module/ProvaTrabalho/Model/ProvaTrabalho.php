@@ -16,7 +16,7 @@ class ProvaTrabalho{
     //Pendente ou aprovado
     private $status;
     //É imagem ou não
-    private $image;
+    private $imagem;
     private $professor;
     private $materia;
     
@@ -82,11 +82,11 @@ class ProvaTrabalho{
         return $this;
     }
     
-    public function isImage(){
+    public function isImagem(){
         return $this->image;
     }
     
-    public function setImage($image){
+    public function setImagem($image){
         $this->image = $image;
         return $this;
     }

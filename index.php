@@ -14,6 +14,9 @@
     </head>
     <body>
         <?php
+            if($_GET == array()){
+                header("location:?module=application&controller=home&action=index");
+            }
 	        ini_set('display_errors', 1);
 	        error_reporting(E_ALL);
             require 'vendor/autoload.php';
