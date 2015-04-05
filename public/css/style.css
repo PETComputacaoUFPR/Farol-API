@@ -107,6 +107,8 @@
     -ms-transition: background-color 0.2s ease-out;
     -o-transition: background-color 0.2s ease-out;
     transition: background-color 0.2s ease-out; }
+  .button:focus, .icon-button:focus {
+    outline: 0; }
 
 .float-button {
   position: relative;

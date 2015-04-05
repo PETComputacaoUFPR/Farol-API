@@ -15,7 +15,8 @@ $("#upload").click(function(){
 		afterClose: function() {
 		},
 		showCloseButton: true,
-		overlayClosesOnClicke: false
+		escapeButtonCloses: false,
+		overlayClosesOnClick: false
 	});
 });
 
@@ -46,8 +47,8 @@ function handleFileSelect(evt) {
 		return function(e) {
 			// Render thumbnail.
 			var span = document.createElement('span');
-			span.innerHTML = ['<img class="thumb" src="', e.target.result,
-			                '" title="', escape(theFile.name), '"/>'].join('');
+			span.innerHTML = ['<a href="', e.target.result,'" data-lightbox="uploads"><img class="thumb" src="', e.target.result,
+			                '" title="', escape(theFile.name), '"/></a>'].join('');
 			$("#list").append(span);
 		};
 		})(f);

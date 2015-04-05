@@ -129,5 +129,11 @@ class ProvaTrabalho{
         $this->materia = $materia;
         return $this;
     }
+    
+    public function stringlize(){
+        $string = ($this->getProvaTrabalho())? "Prova" : "Trabalho";
+        $string = "$string $this->numero - {$this->getMateria()->getCodigo()} $this->professor $this->ano/$this->semestre";
+        return $string;
+    }
 }
 ?>

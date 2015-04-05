@@ -44,7 +44,7 @@ class HomeController extends Controller{
                     $extensao = strtolower($extensao);
                     
                     //Checa se é um arquivo com extensão válida (talvez seja melhor checar pelo type)
-                    if(strstr('.jpg;.jpeg;.gif;.png;.pdf', $extensao))
+                    if(strstr('.jpg;.jpeg;.gif;.png;', $extensao))
                     {
                         // Cria um nome único para esta imagem
                         // Evita que duplique as imagens no servidor.
@@ -94,6 +94,7 @@ class HomeController extends Controller{
                 }catch(\Exception $ex){
                     //Se deu erro ao inserir, deletamos e
                     // mostramos ao usuário quais arquivos não foram salvos
+                    echo $ex;
                     $erroInserir[] = $provaTrabalho;
                 }
             }

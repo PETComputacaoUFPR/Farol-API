@@ -14,7 +14,9 @@
             ?>
             <div class="uploadInfo">
                 <div>
-                    <img src="<?php echo $file->getArquivo(); ?>" class="uploadThumb"/>
+                    <a href="<?php echo $file->getArquivo(); ?>" data-lightbox="arquivos">
+                        <img src="<?php echo $file->getArquivo(); ?>" class="uploadThumb"/>
+                    </a>
                 </div>
                 <div>
                     <button type="button" id="bt-<?php echo $i; ?>" 

@@ -6,6 +6,8 @@
         <link rel="stylesheet" href="/bower_components/components-font-awesome/css/font-awesome.min.css">
         <link rel="stylesheet" href="/public/css/style.min.css">
         <script src="/bower_components/jquery/dist/jquery.min.js"></script>
+        <script type="text/javascript" src="/bower_components/lightbox/js/lightbox.js"></script>
+        <link rel="stylesheet" href="/bower_components/lightbox/css/lightbox.css" type="text/css" />
         <script src="/vex-2.2.1/js/vex.combined.min.js"></script>
     	<script>vex.defaultOptions.className = 'vex-theme-plain';</script>
     	<link rel="stylesheet" href="/vex-2.2.1/css/vex.css" />
