@@ -33,7 +33,7 @@ class ProvaTrabalhoDao extends GenericDao{
         foreach($result as $key => $provaTrab){
             if(!empty($provaTrab->getMateria())){
                 $materiaDao = new MateriaDao($this->conexao);
-                $materia = $materiaDao->recuperar(array('id' => $provaTrab->getMateria()));
+                $materia = $materiaDao->recuperar(array('codigo' => $provaTrab->getMateria()));
                 $result[$key]->setMateria($materia[0]);
             }
         }

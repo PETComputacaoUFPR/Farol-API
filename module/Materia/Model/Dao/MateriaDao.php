@@ -1,6 +1,6 @@
 <?php
 namespace Materia\Model\Dao;
-use \FrameworlMvc\Dao\GenericDao;
+use \FrameworkMvc\Dao\GenericDao;
 
 class MateriaDao extends GenericDao{
     protected function getNomeTabela(){
