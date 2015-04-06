@@ -61,11 +61,15 @@ function closeVex(n){
     $("input[name='files["+n+"][substitutiva]']").val($("input[name='substitutiva']:checked").val());
     $('#bt-'+n).text("Editar informações").removeClass('normal').addClass('light');
     vex.close($vexContent.data().vex.id);
+    
+    if(typeof update == 'function'){
+        update();
+    }
 }
 
 function enviar(numFiles){
     for(var i=0; i < numFiles; i++){
-        if(!$("input[name='files["+i+"][materia]'").val()){
+        if(!$("input[name='files["+i+"][materia]']").val()){
             //Mostra uma mesagem de erro e retorna
             vex.dialog.alert({
                 message: "Preencha as informações de todos os arquivos!",
