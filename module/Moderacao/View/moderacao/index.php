@@ -40,8 +40,9 @@
                 "<input type='hidden' name=\"files[$i][nome]\" value='{$file->getNome()}'>".
                 "<input type='hidden' name=\"files[$i][imagem]\" value='{$file->isImagem()}'> ";
             $i++;
-        
+        //fim do foreach
         }
+    //fim do if
     }
     ?>
 </section>
