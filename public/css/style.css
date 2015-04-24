@@ -100,7 +100,8 @@
   -o-transition: background-color 0.2s ease;
   transition: background-color 0.2s ease; }
   .button:hover, .icon-button:hover {
-    cursor: pointer; }
+    cursor: pointer;
+    text-decoration: none; }
   .button:active, .icon-button:active {
     -webkit-transition: background-color 0.2s ease-out;
     -moz-transition: background-color 0.2s ease-out;
@@ -145,8 +146,9 @@ body {
 
 a {
   color: #39628d;
-  text-decoration: underline; }
+  text-decoration: none; }
   a:hover {
+    text-decoration: underline;
     cursor: pointer;
     color: #1E2251; }
 

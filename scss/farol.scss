@@ -20,8 +20,9 @@ body{
 
 a{
 	color: $deep-sea;
-	text-decoration: underline;
+	text-decoration: none;
 	&:hover{
+		text-decoration: underline;
 		cursor: pointer;
 		color: $nautical;
 	}
