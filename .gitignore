@@ -6,3 +6,5 @@ vendor/
 *.lock
 uploads/*.*
 *.sql
+*.map
+*/**/.map

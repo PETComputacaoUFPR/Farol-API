@@ -10,6 +10,10 @@ class ModeracaoController extends Controller{
     private $viewData;
     
     public function indexAction(){
+        return array();
+    }
+    
+    public function moderacaoAction(){
         $provaTrabDao = new ProvaTrabalhoDao(Conexao::getInstance());
         $result = $provaTrabDao->recuperar(array('status' => 0));
         if($result > 0){
