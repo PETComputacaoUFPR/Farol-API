@@ -25,7 +25,7 @@ class Professor extends Model{
     }
     
     public function getNome(){
-        return $nome;
+        return $this->nome;
     }
     
     public function setNome($nome){

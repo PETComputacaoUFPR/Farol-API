@@ -26,41 +26,8 @@ $di->set('db', function(){
 
 $app = new Micro($di);
 
-/*
-* Tabela de urls
-* Todas as urls são precedidas pela versão da API
-* MÉTODO    | URL                   | AÇÃO
-* -------------------------------------------------------
-* get       | /materias             | Retorna todas as matérias
-* get       | /materias/id          | Retorna matéria com id
-* post      | /materias             | Cadastra uma nova matéria
-* put       | /materias/id          | Atualiza a matéria com id
-* delete    | /materias/id          | Deleta matéria com id
-* -------------------------------------------------------
-* get       | /professores          | Retorna todos os professores
-* get       | /professores/id       | Retorna professor com id
-* post      | /professores          | Cadastra novo professor
-* put       | /professores/id       | Atualiza professor com id
-* delete    | /professores/id       | Deleta professor com id
-* -------------------------------------------------------
-* get       | /users                | Retorna todos os usuários
-* get       | /users/id             | Retorna usuário com id
-* post      | /users                | Cadastra novo usuário
-* put       | /users/id             | Atualiza usuário com id
-* delete    | /users/id             | Deleta usuário com id
-* -------------------------------------------------------
-* get       | /provas/search/materia            | Retorna todas as provas da matéria
-* get       | /provas/search/materia/ano        | Retorna todas as provas da matéria do ano
-* get       | /provas/search/professor          | Retorna todas as provas do professor
-* get       | /provas/search/professor/ano      | Retorna todas as provas do professor do ano
-* get       | /provas/search/materia/professor  | Retorna todas as provas da matéria com professor
-* get       | /provas/search/materia/professor/ano | Retorna todas as provas da matéria com professor e ano
-*/
-
-
-//Matéria
+//-------------------Matérias----------------------------
 $app->get('/v1/materias', function() use ($app){
-    $mat = new Materia();
     $phql = "SELECT * FROM Materia";
     $materias = $app->modelsManager->executeQuery($phql);
     
@@ -72,7 +39,7 @@ $app->get('/v1/materias', function() use ($app){
         );
     }
     
-    echo json_encode($data, JSON_PRETTY_PRINT, 5);
+    echo json_encode($data, JSON_PRETTY_PRINT);
 });
 
 $app->get('/v1/materias/{codigo:[a-zA-Z][a-zA-Z][0-9]+}', function($codigo) use ($app){
@@ -170,6 +137,44 @@ $app->delete('/v1/materias/{codigo:[a-zA-Z][a-zA-Z][0-9]+}', function($codigo) u
 
     }
 
+    return $response;
+});
+
+//-------------------Professores----------------------------
+$app->get('/v1/professores', function() use ($app){
+    $phql = "SELECT * FROM Professor";
+    $professores = $app->modelsManager->executeQuery($phql);
+    
+    $data = array();
+    foreach($professores as $professor){
+        $data[] = array(
+            "id" => $professor->getId(),
+            "nome" => $professor->getNome()
+        );
+    }
+    
+    echo json_encode($data, JSON_PRETTY_PRINT);
+});
+
+$app->get('/v1/professores/{id:[0-9]+}', function($id) use ($app){
+    $phql = "SELECT * FROM Professor where id= :id:";
+    $professor = $app->modelsManager->executeQuery($phql, array(
+        "id" => $id    
+    ))->getFirst();
+    
+    $response = new Response();
+    if($professor == false){
+        $response->setJsonContent(array("status"=>"NOT-FOUND"));
+    }else{
+        $response->setJsonContent(array(
+            "status"=>"FOUND",
+            "data" => array(
+                "id" => $professor->getId(),
+                "nome" => $professor->getNome()
+            )
+        ));
+    }
+    
     return $response;
 });
 
