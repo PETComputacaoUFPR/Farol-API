@@ -57,6 +57,8 @@ $app = new Micro($di);
 * get       | /provas/search/materia/professor/ano | Retorna todas as provas da matéria com professor e ano
 */
 
+
+//Matéria
 $app->get('/v1/materias', function() use ($app){
     $mat = new Materia();
     $phql = "SELECT * FROM Materia";
@@ -73,7 +75,7 @@ $app->get('/v1/materias', function() use ($app){
     echo json_encode($data, JSON_PRETTY_PRINT, 5);
 });
 
-$app->get('/v1/materias/{codigo:[a-z][a-z][0-9]+}', function($codigo) use ($app){
+$app->get('/v1/materias/{codigo:[a-zA-Z][a-zA-Z][0-9]+}', function($codigo) use ($app){
     $phql = "SELECT * FROM Materia WHERE codigo = :codigo:";
     $materia = $app->modelsManager->executeQuery($phql, array(
         "codigo" => $codigo
@@ -96,12 +98,86 @@ $app->get('/v1/materias/{codigo:[a-z][a-z][0-9]+}', function($codigo) use ($app)
     return $response;
 });
 
+$app->post('/v1/materias', function() use ($app){
+    $materia = $app->request->getJsonRawBody();
+    $phql = "INSERT INTO Materia VALUES (:codigo:, :nome:)";
+    
+    $status = $app->modelsManager->executeQuery($phql, array(
+        "codigo" => $materia->getCodigo(),
+        "nome" => $materia->getNome()
+    ));
+    
+    $response = new Response();
+    if($status->success() == true){
+        $response->setStatusCode(201, "Created");
+        $response->setJsonContent(array("status" => "OK", "data" => $materia));
+    }else{
+        $response->setStatusCode(409, "Conflict");
+        $erros = array();
+        foreach($status->getMessages() as $message){
+            $errors[] = $message->getMessage();
+        }
+        $response->setJsonContent(array("status" => "ERROR", "messages" => $errors));
+    }
+    
+    return $response;
+});
 
+$app->put('/v1/materias/{codigo:[a-zA-Z][a-zA-Z][0-9]+}', function($codigo) use ($app){
+    $materia = $app->request->getJsonRawBody();
+    
+    $phql = "UPDATE Materia SET codigo = :codigo:, nome = :nome: WHERE codigo = :id:";
+    $status = $app->modelsManager->executeQuery($phql, array(
+        "codigo" => $materia->getCodigo(),
+        "nome"   => $materia->getNome(),
+        "id"     => $codigo
+    ));
+    
+    $response = new Response();
+    
+    if($status->success == true){
+        $response->setJsonContent(array("status" => "OK"));
+    }else{
+        $response->setStatusCode(409, "Conflict");
+        $errors = array();
+        foreach ($status->getMessages() as $message) {
+            $errors[] = $message->getMessage();
+        }
 
+        $response->setJsonContent(array('status' => 'ERROR', 'messages' => $errors));
+    }
 
+    return $response;
+});
+
+$app->delete('/v1/materias/{codigo:[a-zA-Z}[a-zA-Z][0-9]+', function($codigo) use ($app){
+    $phql = "DELETE FROM Materia WHERE codigo = :codigo:";
+    $status = $app->modelsManager->executeQuery($phql, array(
+        "codigo" => $codigo
+    ));
+    
+    $response = new Response();
+    if($status->success == true){
+        $response->setJsonContent(array("status" => "OK"));
+    }else{
+        $response->setStatusCode(409, "Conflict");
+
+        $errors = array();
+        foreach ($status->getMessages() as $message) {
+            $errors[] = $message->getMessage();
+        }
+
+        $response->setJsonContent(array('status' => 'ERROR', 'messages' => $errors));
+
+    }
+
+    return $response;
+});
+
+//Caso venha uma url inválida
 $app->notFound(function () use ($app) {
     $app->response->setStatusCode(404, "Not Found")->sendHeaders();
-    echo 'This is crazy, but this page was not found!';
+    echo "Página não encontrada";
 });
 
 $app->handle();
