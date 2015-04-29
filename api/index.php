@@ -75,7 +75,7 @@ $app->post('/v1/materias', function() use ($app){
     ));
     
     $response = new Response();
-    if($status->success() == true){
+    if($status->success()){
         $response->setStatusCode(201, "Created");
         $response->setJsonContent(array("status" => "OK", "data" => $materia));
     }else{
@@ -101,7 +101,7 @@ $app->put('/v1/materias/{codigo:[a-zA-Z][a-zA-Z][0-9]+}', function($codigo) use 
     
     $response = new Response();
     
-    if($status->success() == true){
+    if($status->success()){
         $response->setJsonContent(array("status" => "OK"));
     }else{
         $response->setStatusCode(409, "Conflict");
@@ -123,7 +123,7 @@ $app->delete('/v1/materias/{codigo:[a-zA-Z][a-zA-Z][0-9]+}', function($codigo) u
     ));
     
     $response = new Response();
-    if($status->success() == true){
+    if($status->success()){
         $response->setJsonContent(array("status" => "OK"));
     }else{
         $response->setStatusCode(409, "Conflict");
@@ -175,6 +175,66 @@ $app->get('/v1/professores/{id:[0-9]+}', function($id) use ($app){
         ));
     }
     
+    return $response;
+});
+
+$app->post('/v1/professores', function() use ($app){
+    $object = $app->request->getJsonRawBody();
+    $professor = new Professor();
+    $professor->setNome($object->nome);
+
+    $response = new Response();
+    if($professor->save() != false){
+        $response->setStatusCode(201, "Created");
+        $response->setJsonContent(array("status" => "OK", "data" => $objeto));
+    }else{
+        $response->setStatusCode(409, "Conflict");
+        $erros = array();
+        $response->setJsonContent(array("status" => "ERROR", "messages" => $errors));
+    }
+    return $response;
+});
+
+$app->put('/v1/professores/{id:[0-9]}', function($id) use ($app){
+    $professor = $app->request->getJsonRawBody();
+    $phql = "UPDATE Professor SET nome = :nome: WHERE id = :id:";
+    $status = $app->modelsManager->executeQuery($phql, array(
+        "nome" => $professor->nome,
+        "id" => $id
+    ));
+    
+    $response = new Response();
+    if($status->success()){
+        $response->setJsonContent(array("status" => "OK"));
+    }else{
+        $reponse->setStatusCode(409, "Conflict");
+        $errors = array();
+        foreach ($status->getMessages() as $message) {
+            $errors[] = $message->getMessage();
+        }
+        $response->setJsonContent(array('status' => 'ERROR', 'messages' => $errors));
+    }
+    
+    return $response;
+});
+
+$app->delete('/v1/professores/{id:[0-9]+}', function($id) use ($app){
+    $phql = "DELETE FROM Professor WHERE id= :id:";
+    $status = $app->modelsManager->executeQuery($phql, array(
+        "id" => $id
+    ));
+    
+    $response = new Response();
+    if($status->success()){
+        $response->setJsonContent(array("status" => "OK"));
+    }else{
+        $response->setStatusCode(409, "Conflict");
+        $errors = array();
+        foreach ($status->getMessages() as $message) {
+            $errors[] = $message->getMessage();
+        }
+        $response->setJsonContent(array('status' => 'ERROR', 'messages' => $errors));
+    }
     return $response;
 });
 
