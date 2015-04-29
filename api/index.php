@@ -103,8 +103,8 @@ $app->post('/v1/materias', function() use ($app){
     $phql = "INSERT INTO Materia VALUES (:codigo:, :nome:)";
     
     $status = $app->modelsManager->executeQuery($phql, array(
-        "codigo" => $materia->getCodigo(),
-        "nome" => $materia->getNome()
+        "codigo" => $materia->codigo,
+        "nome" => $materia->nome
     ));
     
     $response = new Response();
@@ -126,16 +126,15 @@ $app->post('/v1/materias', function() use ($app){
 $app->put('/v1/materias/{codigo:[a-zA-Z][a-zA-Z][0-9]+}', function($codigo) use ($app){
     $materia = $app->request->getJsonRawBody();
     
-    $phql = "UPDATE Materia SET codigo = :codigo:, nome = :nome: WHERE codigo = :id:";
+    $phql = "UPDATE Materia SET nome = :nome: WHERE codigo = :codigo:";
     $status = $app->modelsManager->executeQuery($phql, array(
-        "codigo" => $materia->getCodigo(),
-        "nome"   => $materia->getNome(),
-        "id"     => $codigo
+        "codigo"     => $codigo,
+        "nome"   => $materia->nome
     ));
     
     $response = new Response();
     
-    if($status->success == true){
+    if($status->success() == true){
         $response->setJsonContent(array("status" => "OK"));
     }else{
         $response->setStatusCode(409, "Conflict");
@@ -150,14 +149,14 @@ $app->put('/v1/materias/{codigo:[a-zA-Z][a-zA-Z][0-9]+}', function($codigo) use 
     return $response;
 });
 
-$app->delete('/v1/materias/{codigo:[a-zA-Z}[a-zA-Z][0-9]+', function($codigo) use ($app){
+$app->delete('/v1/materias/{codigo:[a-zA-Z][a-zA-Z][0-9]+}', function($codigo) use ($app){
     $phql = "DELETE FROM Materia WHERE codigo = :codigo:";
     $status = $app->modelsManager->executeQuery($phql, array(
         "codigo" => $codigo
     ));
     
     $response = new Response();
-    if($status->success == true){
+    if($status->success() == true){
         $response->setJsonContent(array("status" => "OK"));
     }else{
         $response->setStatusCode(409, "Conflict");
@@ -177,7 +176,7 @@ $app->delete('/v1/materias/{codigo:[a-zA-Z}[a-zA-Z][0-9]+', function($codigo) us
 //Caso venha uma url inválida
 $app->notFound(function () use ($app) {
     $app->response->setStatusCode(404, "Not Found")->sendHeaders();
-    echo "Página não encontrada";
+    echo "<h3>Page not found</h3>";
 });
 
 $app->handle();

@@ -23,11 +23,7 @@ class Materia extends Model{
                 "field" => "codigo",
                 "message" => "O código da matéria deve ser único"
                 )));
-        $this->validate(new Uniqueness(
-            array(
-                "field" => "nome",
-                "message" => "O nome da matéria deve ser único"
-                )));
+        
                 
         if($this->validationHasFailed() == true){
             return false;

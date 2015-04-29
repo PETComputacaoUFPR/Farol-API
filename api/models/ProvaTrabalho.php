@@ -12,7 +12,7 @@ class ProvaTrabalho extends Model{
     private $nome;
     //Prova ou trabalho
     private $provaTrabalho;
-    //Prova 1 ou 2 ou final, trabalho 1 ou 2 ou final
+    //1, 2, 3 ou final
     private $numero;
     private $substitutiva;
     private $ano;
