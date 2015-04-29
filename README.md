@@ -1,9 +1,6 @@
 # Farol
 ### Repositório de provas e trabalhos
-[![Gitter](https://badges.gitter.im/VytorCalixto/pet-farol.svg)](https://gitter.im/VytorCalixto/pet-farol)
-
-
-![lighthouse](https://d13yacurqjgara.cloudfront.net/users/195056/screenshots/873094/lighthouse.jpg)
+[![Join the chat at https://gitter.im/PETComputacaoUFPR/Farol](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/PETComputacaoUFPR/Farol?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
 ## Sobre este projeto
 O Farol tem como objetivo ser o repositório digital de provas e trabalhos. Você pode enviar ou procurar provas e especificações de trabalhos.

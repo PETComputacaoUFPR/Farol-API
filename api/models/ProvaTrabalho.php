@@ -1,14 +1,18 @@
 <?php
-
 namespace ProvaTrabalho\Model;
 
-class ProvaTrabalho{
+use Phalcon\Mvc\Model;
+use Phalcon\Mvc\Model\Message;
+use Phalcon\Mvc\Model\Validator\Uniqueness;
+use Phalcon\Mvc\Model\Validator\InclusionIn;
+
+class ProvaTrabalho extends Model{
     private $id;
     //Nome original do arquivo
     private $nome;
     //Prova ou trabalho
     private $provaTrabalho;
-    //Prova 1 ou 2 ou final, trabalho 1 ou 2 ou final
+    //1, 2, 3 ou final
     private $numero;
     private $substitutiva;
     private $ano;
@@ -21,6 +25,28 @@ class ProvaTrabalho{
     private $imagem;
     private $professor;
     private $materia;
+    
+    /**
+     * Retorna o nome da tabela no banco de dados
+    */
+    public function getSource(){
+        return "tbProvaTrabalho";
+    }
+    
+    public function initialize(){
+        $this->setSource("tbProvaTrabalho");
+    }
+    
+    public function validation(){
+        $this->validate(new InclusionIn(
+            array(
+                "field" => "provaTrabalho",
+                "domain" => array("prova","trabalho") 
+                )));
+        
+    }
+    
+    //Getters and setters
     
     public function getId(){
         return $this->id;
@@ -72,6 +98,9 @@ class ProvaTrabalho{
     }
     
     public function setAno($ano){
+        if($ano < 0){
+            throw new \InvalidArgumentException('ProvaTrabalho.ano não pode ser negativo');
+        }
         $this->ano = $ano;
         return $this;
     }
@@ -130,10 +159,6 @@ class ProvaTrabalho{
         return $this;
     }
     
-    public function stringlize(){
-        $string = ($this->getProvaTrabalho())? "Prova" : "Trabalho";
-        $string = "$string $this->numero - {$this->getMateria()->getCodigo()} $this->professor $this->ano/$this->semestre";
-        return $string;
-    }
+    
 }
 ?>
