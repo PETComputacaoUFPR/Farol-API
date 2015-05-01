@@ -27,37 +27,29 @@ $di->set('db', function(){
 $app = new Micro($di);
 
 //-------------------Matérias----------------------------
-$app->get('/v1/materias', function() use ($app){
-    $phql = "SELECT * FROM Materia";
-    $materias = $app->modelsManager->executeQuery($phql);
-    
+$app->get('/v1/materias', function(){
     $data = array();
-    foreach($materias as $materia){
+    foreach(Materia::find() as $materia){
         $data[] = array(
             'codigo'    => $materia->getCodigo(),
             'nome'      => $materia->getNome()
         );
     }
-    
-    echo json_encode($data, JSON_PRETTY_PRINT);
+    echo json_encode($data);
 });
 
-$app->get('/v1/materias/{codigo:[a-zA-Z][a-zA-Z][0-9]+}', function($codigo) use ($app){
-    $phql = "SELECT * FROM Materia WHERE codigo = :codigo:";
-    $materia = $app->modelsManager->executeQuery($phql, array(
-        "codigo" => $codigo
-    ))->getFirst();
-    
+$app->get('/v1/materias/{codigo:[a-zA-Z][a-zA-Z][0-9]+}', function($codigo){
+    $materia = Materia::findFirstByCodigo($codigo);
     $response = new Response();
     
-    if($materia == false){
-        $response->setJsonContent(array("status"=>"NOT-FOUND"));
+    if(!$materia){
+        $response->setJsonContent(array("status" => "NOT-FOUND"));
     }else{
         $response->setJsonContent(array(
             "status" => "FOUND",
             "data" => array(
                 "codigo" => $materia->getCodigo(),
-                "nome"   => $materia->getNome()
+                "nome" => $materia->getNome()
             )
         ));
     }
@@ -66,22 +58,19 @@ $app->get('/v1/materias/{codigo:[a-zA-Z][a-zA-Z][0-9]+}', function($codigo) use 
 });
 
 $app->post('/v1/materias', function() use ($app){
-    $materia = $app->request->getJsonRawBody();
-    $phql = "INSERT INTO Materia VALUES (:codigo:, :nome:)";
-    
-    $status = $app->modelsManager->executeQuery($phql, array(
-        "codigo" => $materia->codigo,
-        "nome" => $materia->nome
-    ));
+    $jsonObject = $app->request->getJsonRawBody();
+    $materia = new Materia();
+    $materia->setCodigo($jsonObject->codigo);
+    $materia->setNome($jsonObject->nome);
     
     $response = new Response();
-    if($status->success()){
+    if($materia->save()){
         $response->setStatusCode(201, "Created");
-        $response->setJsonContent(array("status" => "OK", "data" => $materia));
+        $response->setJsonContent(array("status" => "OK", "data" => $jsonObject));
     }else{
         $response->setStatusCode(409, "Conflict");
         $erros = array();
-        foreach($status->getMessages() as $message){
+        foreach($materia->getMessages() as $message){
             $errors[] = $message->getMessage();
         }
         $response->setJsonContent(array("status" => "ERROR", "messages" => $errors));
@@ -91,17 +80,17 @@ $app->post('/v1/materias', function() use ($app){
 });
 
 $app->put('/v1/materias/{codigo:[a-zA-Z][a-zA-Z][0-9]+}', function($codigo) use ($app){
-    $materia = $app->request->getJsonRawBody();
-    
-    $phql = "UPDATE Materia SET nome = :nome: WHERE codigo = :codigo:";
-    $status = $app->modelsManager->executeQuery($phql, array(
-        "codigo"     => $codigo,
-        "nome"   => $materia->nome
-    ));
-    
+    $jsonObject = $app->request->getJsonRawBody();
+    $materia = Materia::findFirstByCodigo($codigo);
     $response = new Response();
     
-    if($status->success()){
+    if(!$materia){
+        $response->setJsonContent(array("status"=>"NOT-FOUND"));
+        return $response;
+    }
+    $materia->setNome($jsonObject->nome);
+    
+    if($materia->update()){
         $response->setJsonContent(array("status" => "OK"));
     }else{
         $response->setStatusCode(409, "Conflict");
@@ -117,19 +106,21 @@ $app->put('/v1/materias/{codigo:[a-zA-Z][a-zA-Z][0-9]+}', function($codigo) use 
 });
 
 $app->delete('/v1/materias/{codigo:[a-zA-Z][a-zA-Z][0-9]+}', function($codigo) use ($app){
-    $phql = "DELETE FROM Materia WHERE codigo = :codigo:";
-    $status = $app->modelsManager->executeQuery($phql, array(
-        "codigo" => $codigo
-    ));
-    
+    $materia = Materia::findFirstByCodigo($codigo);
     $response = new Response();
-    if($status->success()){
+    
+    if(!$materia){
+        $response->setJsonContent(array("status" => "NOT-FOUND"));
+        return $response;
+    }
+    
+    if($materia->delete()){
         $response->setJsonContent(array("status" => "OK"));
     }else{
         $response->setStatusCode(409, "Conflict");
 
         $errors = array();
-        foreach ($status->getMessages() as $message) {
+        foreach ($materia->getMessages() as $message) {
             $errors[] = $message->getMessage();
         }
 
@@ -190,6 +181,9 @@ $app->post('/v1/professores', function() use ($app){
     }else{
         $response->setStatusCode(409, "Conflict");
         $erros = array();
+        foreach ($profesor->getMessages() as $message) {
+            $errors[] = $message->getMessage();
+        }
         $response->setJsonContent(array("status" => "ERROR", "messages" => $errors));
     }
     return $response;
