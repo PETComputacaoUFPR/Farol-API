@@ -31,7 +31,7 @@ $di->set('app', $app, true);
 
 //-------------------Matérias----------------------------
 $materias = new MicroCollection();
-$materias->setHandler("MateriaController", true);
+$materias->setHandler("MateriaController")->setLazy(true);
 //Adiciona o prefixo /v1/materias
 $materias->setPrefix("/v1/materias");
 
@@ -46,15 +46,15 @@ $app->mount($materias);
 
 //-------------------Professores----------------------------
 $professores = new MicroCollection();
-$professores->setHandler("ProfessorController", true);
+$professores->setHandler("ProfessorController")->setLazy(true);
 //Adiciona o prefixo /v1/professores
 $professores->setPrefix("/v1/professores");
 
-$professores->post("/", "create");                                             //C
-$professores->get("/", "retrieveAll");                                         //R
+$professores->post("/", "create");                          //C
+$professores->get("/", "retrieveAll");                      //R
 $professores->get("/{id:[0-9]+}", "retrieveById");
-$professores->put("/{id:[0-9]+}", "update");               //U
-$professores->delete("/{id:[0-9]+}", "delete");            //D
+$professores->put("/{id:[0-9]+}", "update");                //U
+$professores->delete("/{id:[0-9]+}", "delete");             //D
 
 $app->mount($professores);
 
