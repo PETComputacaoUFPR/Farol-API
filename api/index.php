@@ -132,12 +132,9 @@ $app->delete('/v1/materias/{codigo:[a-zA-Z][a-zA-Z][0-9]+}', function($codigo) u
 });
 
 //-------------------Professores----------------------------
-$app->get('/v1/professores', function() use ($app){
-    $phql = "SELECT * FROM Professor";
-    $professores = $app->modelsManager->executeQuery($phql);
-    
+$app->get('/v1/professores', function(){
     $data = array();
-    foreach($professores as $professor){
+    foreach(Professor::find() as $professor){
         $data[] = array(
             "id" => $professor->getId(),
             "nome" => $professor->getNome()
@@ -147,14 +144,11 @@ $app->get('/v1/professores', function() use ($app){
     echo json_encode($data, JSON_PRETTY_PRINT);
 });
 
-$app->get('/v1/professores/{id:[0-9]+}', function($id) use ($app){
-    $phql = "SELECT * FROM Professor where id= :id:";
-    $professor = $app->modelsManager->executeQuery($phql, array(
-        "id" => $id    
-    ))->getFirst();
+$app->get('/v1/professores/{id:[0-9]+}', function($id){
+    $professor = Professor::findFirst($id);
     
     $response = new Response();
-    if($professor == false){
+    if(!$professor){
         $response->setJsonContent(array("status"=>"NOT-FOUND"));
     }else{
         $response->setJsonContent(array(
@@ -170,18 +164,18 @@ $app->get('/v1/professores/{id:[0-9]+}', function($id) use ($app){
 });
 
 $app->post('/v1/professores', function() use ($app){
-    $object = $app->request->getJsonRawBody();
+    $jsonObject = $app->request->getJsonRawBody();
     $professor = new Professor();
-    $professor->setNome($object->nome);
+    $professor->setNome($jsonObject->nome);
 
     $response = new Response();
-    if($professor->save() != false){
+    if($professor->save()){
         $response->setStatusCode(201, "Created");
-        $response->setJsonContent(array("status" => "OK", "data" => $objeto));
+        $response->setJsonContent(array("status" => "OK", "data" => $jsonObject));
     }else{
         $response->setStatusCode(409, "Conflict");
         $erros = array();
-        foreach ($profesor->getMessages() as $message) {
+        foreach ($professor->getMessages() as $message) {
             $errors[] = $message->getMessage();
         }
         $response->setJsonContent(array("status" => "ERROR", "messages" => $errors));
@@ -189,21 +183,24 @@ $app->post('/v1/professores', function() use ($app){
     return $response;
 });
 
-$app->put('/v1/professores/{id:[0-9]}', function($id) use ($app){
-    $professor = $app->request->getJsonRawBody();
-    $phql = "UPDATE Professor SET nome = :nome: WHERE id = :id:";
-    $status = $app->modelsManager->executeQuery($phql, array(
-        "nome" => $professor->nome,
-        "id" => $id
-    ));
+$app->put('/v1/professores/{id:[0-9]+}', function($id) use ($app){
+    $jsonObject = $app->request->getJsonRawBody();
+    $professor = Professor::findFirst($id);
+    $professor->setNome($jsonObject->nome);
     
     $response = new Response();
-    if($status->success()){
+    
+    if(!$professor){
+        $response->setJsonContent(array("status" => "NOT-FOUND"));
+        return $response;
+    }
+    
+    if($professor->update()){
         $response->setJsonContent(array("status" => "OK"));
     }else{
-        $reponse->setStatusCode(409, "Conflict");
+        $response->setStatusCode(409, "Conflict");
         $errors = array();
-        foreach ($status->getMessages() as $message) {
+        foreach ($professor->getMessages() as $message) {
             $errors[] = $message->getMessage();
         }
         $response->setJsonContent(array('status' => 'ERROR', 'messages' => $errors));
@@ -212,19 +209,21 @@ $app->put('/v1/professores/{id:[0-9]}', function($id) use ($app){
     return $response;
 });
 
-$app->delete('/v1/professores/{id:[0-9]+}', function($id) use ($app){
-    $phql = "DELETE FROM Professor WHERE id= :id:";
-    $status = $app->modelsManager->executeQuery($phql, array(
-        "id" => $id
-    ));
+$app->delete('/v1/professores/{id:[0-9]+}', function($id){
+    $professor = Professor::findFirst($id);
     
     $response = new Response();
-    if($status->success()){
+    if(!$professor){
+        $response->setJsonContent(array("status" => "NOT-FOUND"));
+        return $response;
+    }
+    
+    if($professor->delete()){
         $response->setJsonContent(array("status" => "OK"));
     }else{
         $response->setStatusCode(409, "Conflict");
         $errors = array();
-        foreach ($status->getMessages() as $message) {
+        foreach ($professor->getMessages() as $message) {
             $errors[] = $message->getMessage();
         }
         $response->setJsonContent(array('status' => 'ERROR', 'messages' => $errors));
