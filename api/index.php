@@ -61,7 +61,7 @@ $app->mount($professores);
 //-------------------404------------------------------------
 $app->notFound(function () use ($app) {
     $app->response->setStatusCode(404, "Not Found")->sendHeaders();
-    echo "<h3>Page not found</h3>";
+    echo json_encode(array("status" => "PAGE-NOT-FOUND"));
 });
 
 $app->handle();
