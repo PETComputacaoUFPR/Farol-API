@@ -72,8 +72,8 @@ class MateriaController extends Controller{
             $response->setJsonContent(array(
                 "status" => "FOUND",
                 "data" => array(
-                    "codigo" => $materia->getCodigo(),
-                    "nome" => $materia->getNome()
+                    "codigo"    => $materia->getCodigo(),
+                    "nome"      => $materia->getNome()
                 )
             ));
         }

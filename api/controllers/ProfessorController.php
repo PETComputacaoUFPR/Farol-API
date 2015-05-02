@@ -55,7 +55,7 @@ class ProfessorController extends Controller{
         foreach(Professor::find() as $professor){
             $data[] = array(
                 'id'    => $professor->getId(),
-                'nome'      => $professor->getNome()
+                'nome'  => $professor->getNome()
             );
         }
         echo json_encode($data);
@@ -71,8 +71,8 @@ class ProfessorController extends Controller{
             $response->setJsonContent(array(
                 "status" => "FOUND",
                 "data" => array(
-                    "codigo" => $professor->getCodigo(),
-                    "nome" => $professor->getNome()
+                    "id"    => $professor->getId(),
+                    "nome"  => $professor->getNome()
                 )
             ));
         }
