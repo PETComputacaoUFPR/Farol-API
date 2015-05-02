@@ -13,6 +13,7 @@ class Professor extends Model{
     
     public function initialize(){
         $this->setSource("tbProfessor");
+        $this->hasMany("id", "ProvaTrabalho", "tbProfessor_id");
     }
     
     public function getId(){

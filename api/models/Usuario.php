@@ -19,6 +19,7 @@ class Usuario extends Model{
     
     public function initialize(){
         $this->setSource("tbUsuario");
+        $this->hasMany("id", "ProvaTrabalho", "tbUsuario_id");
     }
     
     public function validation(){

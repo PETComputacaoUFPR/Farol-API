@@ -14,6 +14,7 @@ class Materia extends Model{
     
     public function initialize(){
         $this->setSource("tbMateria");
+        $this->hasMany("codigo", "ProvaTrabalho", "tbMateria_codigo");
     }
     
     public function validation(){

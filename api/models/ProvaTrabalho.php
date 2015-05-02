@@ -7,6 +7,11 @@ use Phalcon\Mvc\Model\Validator\Uniqueness;
 use Phalcon\Mvc\Model\Validator\InclusionIn;
 
 class ProvaTrabalho extends Model{
+    const PROVA = "prova";
+    const TRABALHO = "trabalho";
+    const PENDENTE = "pendente";
+    const APROVADO = "aprovado";
+    
     private $id;
     //Nome original do arquivo
     private $nome;
@@ -14,17 +19,19 @@ class ProvaTrabalho extends Model{
     private $provaTrabalho;
     //1, 2, 3 ou final
     private $numero;
+    //É substitutiva ou não (boolean)
     private $substitutiva;
     private $ano;
     private $semestre;
     //Caminho para o arquivo
     private $arquivo;
-    //Pendente ou aprovado (0, 1)
+    //Pendente ou aprovado
     private $status;
-    //É imagem ou não
+    //É imagem ou não (boolean)
     private $imagem;
-    private $professor;
-    private $materia;
+    private $tbMateria_codigo;
+    private $tbProfessor_id;
+    private $tbUsuario_id;
     
     /**
      * Retorna o nome da tabela no banco de dados
@@ -35,15 +42,40 @@ class ProvaTrabalho extends Model{
     
     public function initialize(){
         $this->setSource("tbProvaTrabalho");
+        $this->belongsTo("tbMateria_codigo", "Materia", "codigo");
+        $this->belongsTo("tbProfessor_id", "Professor", "id");
+        $this->belongsTo("tbUsuario_id", "Usuario", "id");
     }
     
     public function validation(){
         $this->validate(new InclusionIn(
             array(
-                "field" => "provaTrabalho",
-                "domain" => array("prova","trabalho") 
-                )));
+                "field"     => "provaTrabalho",
+                "domain"    => array("prova","trabalho") 
+            )
+        ));
         
+        $this->validate(new InclusionIn(
+            array(
+                "field"     => "numero",
+                "domain"    => array("1","2","3","final")
+            )
+        ));
+        
+        $this->validate(new InclusionIn(
+            array(
+                "field"     => "status",
+                "domain"    => array("pendente", "aprovado")
+            )
+        ));
+        
+        if($this->ano < 0){
+            $this->appendMessage(new Message("O ano não pode ser negativo"));
+        }
+        
+        if($this->validationHasFailed()){
+            return false;
+        }
     }
     
     //Getters and setters
@@ -140,25 +172,5 @@ class ProvaTrabalho extends Model{
         $this->image = $image;
         return $this;
     }
-    
-    public function getProfessor(){
-        return $this->professor;
-    }
-    
-    public function setProfessor($professor){
-        $this->professor = $professor;
-        return $this;
-    }
-    
-    public function getMateria(){
-        return $this->materia;
-    }
-    
-    public function setMateria($materia){
-        $this->materia = $materia;
-        return $this;
-    }
-    
-    
 }
 ?>
