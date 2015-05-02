@@ -2,6 +2,8 @@
 use Phalcon\Mvc\Model;
 use Phalcon\Mvc\Model\Message;
 use Phalcon\Mvc\Model\Validator\Uniqueness;
+use Phalcon\Mvc\Model\Validator\Email as EmailValidator;
+use Phalcon\Mvc\Model\Validator\StringLength;
 
 class Usuario extends Model{
     private $id;
@@ -16,6 +18,36 @@ class Usuario extends Model{
     
     public function initialize(){
         $this->setSource("tbUsuario");
+    }
+    
+    public function validation(){
+        $this->validate(new Uniqueness(
+            array(
+                "field"     => "email",
+                "message"   => "Este e-mail ja esta sendo utilizado por outra conta"
+            )
+        ));
+        
+        $this->validate(new EmailValidator(
+            array(
+                "field"     => "email",
+                "message"   => "O e-mail não é válido"
+            )
+        ));
+        
+        $this->validate(new StringLength(
+            array(
+                "field"             => "senha",
+                "min"               => 8,
+                "max"               => 45,
+                "messageMinimun"    => "Senha deve ter no mínimo 8 caracteres",
+                "messageMaximun"    => "Senha deve ter no máximo 45 caracteres"
+            )
+        ));
+        
+        if($this->validationHasFailed()){
+            return false;
+        }
     }
     
     public function getId(){

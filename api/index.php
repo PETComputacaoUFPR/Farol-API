@@ -58,6 +58,21 @@ $professores->delete("/{id:[0-9]+}", "delete");             //D
 
 $app->mount($professores);
 
+//-------------------Usuarios-------------------------------
+$usuarios = new MicroCollection();
+$usuarios->setHandler("UsuarioController")->setLazy(true);
+//Adiciona o prefixo /v1/u
+$usuarios->setPrefix("/v1/u");
+
+$usuarios->post("/", "create");                             //C
+$usuarios->get("/", "retrieveAll");                         //R
+$usuarios->get("/users/{tipo:[a-zA-Z]+}", "retrieveAllByType");
+$usuarios->get("/{id:[0-9]+}", "retrieveById");
+$usuarios->put("/{id:[0-9]+}", "update");                   //U
+$usuarios->delete("/{id:[0-9]+}", "delete");                //D
+
+$app->mount($usuarios);
+
 //-------------------404------------------------------------
 $app->notFound(function () use ($app) {
     $app->response->setStatusCode(404, "Not Found")->sendHeaders();
