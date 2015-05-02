@@ -8,6 +8,7 @@ class UsuarioController extends Controller{
     public function create(){
         $jsonObject = $this->app->request->getJsonRawBody();
         $usuario = new Usuario();
+        $usuario->setNome($jsonObject->nome);
         $usuario->setEmail($jsonObject->email);
         $usuario->setSenha(md5($jsonObject->senha));
         $usuario->setAdmin($jsonObject->admin);
@@ -38,6 +39,7 @@ class UsuarioController extends Controller{
             $response->setJsonContent(array("status"=>"NOT-FOUND"));
             return $response;
         }
+        $usuario->setNome($jsonObject->nome);
         $usuario->setEmail($jsonObject->email);
         $usuario->setSenha($jsonObject->senha);
         $usuario->setAdmin($jsonObject->admin);
@@ -61,6 +63,7 @@ class UsuarioController extends Controller{
         foreach(Usuario::find() as $usuario){
             $data[] = array(
                 'id'        => $usuario->getId(),
+                'nome'     => $usuario->getNome(),
                 'email'     => $usuario->getEmail(),
                 'admin'     => $usuario->isAdmin(),
                 'moderador' => $usuario->isModerador()
@@ -80,6 +83,7 @@ class UsuarioController extends Controller{
         foreach(Usuario::find($where) as $usuario){
             $data[] = array(
                 'id'        => $usuario->getId(),
+                'nome'     => $usuario->getNome(),
                 'email'     => $usuario->getEmail(),
                 'admin'     => $usuario->isAdmin(),
                 'moderador' => $usuario->isModerador()
@@ -99,6 +103,7 @@ class UsuarioController extends Controller{
                 "status" => "FOUND",
                 "data" => array(
                     'id'        => $usuario->getId(),
+                    'nome'     => $usuario->getNome(),
                     'email'     => $usuario->getEmail(),
                     'admin'     => $usuario->isAdmin(),
                     'moderador' => $usuario->isModerador()
