@@ -102,6 +102,22 @@ class ProfessorController extends Controller{
         return $response;
     }
     
+    public function searchByNome($nome){
+        $data = array();
+        $professores = Professor::find(array(
+            "conditions"    => "nome like ?1",
+            "bind"          => array(1 => "%".$nome."%")
+        ));
+        foreach($professores as $professor){
+            $data[] = array(
+                "id"    => $professor->getId(),
+                "nome"  => $professor->getNome()
+            );
+        }
+        
+        echo json_encode($data);
+    }
+    
 }
 
 ?>

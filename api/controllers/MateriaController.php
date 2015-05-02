@@ -103,6 +103,22 @@ class MateriaController extends Controller{
         return $response;
     }
     
+    public function search($query){
+        $data = array();
+        $materias = Materia::find(array(
+            "conditions"    => "nome like ?1 OR codigo like ?2",
+            "bind"          => array(1 => "%".$query."%", 2 => "%".$query."%")
+        ));
+        foreach($materias as $materia){
+            $data[] = array(
+                "codigo"    => $materia->getCodigo(),
+                "nome"  => $materia->getNome()
+            );
+        }
+        
+        echo json_encode($data);
+    }
+    
 }
 
 ?>

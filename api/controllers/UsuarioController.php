@@ -41,7 +41,6 @@ class UsuarioController extends Controller{
         }
         $usuario->setNome($jsonObject->nome);
         $usuario->setEmail($jsonObject->email);
-        $usuario->setSenha($jsonObject->senha);
         $usuario->setAdmin($jsonObject->admin);
         $usuario->setModerador($jsonObject->moderador);
         
