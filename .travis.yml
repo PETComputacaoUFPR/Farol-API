@@ -24,7 +24,7 @@ before_script:
   - sudo killall php5-fpm
   - sudo killall apache2
   - sudo php5-fpm
-  - sudo apache2
+  - apache2
   
   # configure apache virtual hosts
   - sudo cp -f build/travis-ci-apache /etc/apache2/sites-available/default
