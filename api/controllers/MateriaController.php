@@ -12,6 +12,7 @@ class MateriaController extends Controller{
         $materia->setNome($jsonObject->nome);
         
         $response = new Response();
+        $response->setHeader("Content-type", "application/json");
         if($materia->save()){
             $response->setStatusCode(201, "Created");
             $response->setJsonContent(array("status" => "OK", "data" => $jsonObject));
@@ -31,6 +32,7 @@ class MateriaController extends Controller{
         $jsonObject = $this->app->request->getJsonRawBody();
         $materia = Materia::findFirstByCodigo($codigo);
         $response = new Response();
+        $response->setHeader("Content-type", "application/json");
         
         if(!$materia){
             $response->setJsonContent(array("status"=>"NOT-FOUND"));
@@ -59,12 +61,15 @@ class MateriaController extends Controller{
                 'nome'      => $materia->getNome()
             );
         }
-        echo json_encode($data);
+        $response = new Response();
+        $response->setJsonContent($data)->setHeader("Content-type", "application/json");
+        return $response;
     }
     
     public function retrieveByCodigo($codigo){
         $materia = Materia::findFirstByCodigo($codigo);
         $response = new Response();
+        $response->setHeader("Content-type", "application/json");
         
         if(!$materia){
             $response->setJsonContent(array("status" => "NOT-FOUND"));
@@ -84,6 +89,7 @@ class MateriaController extends Controller{
     public function delete($codigo){
         $materia = Materia::findFirstByCodigo($codigo);
         $response = new Response();
+        $response->setHeader("Content-type", "application/json");
         
         if(!$materia){
             $response->setJsonContent(array("status" => "NOT-FOUND"));
@@ -123,7 +129,9 @@ class MateriaController extends Controller{
             );
         }
         
-        echo json_encode($data);
+        $response = new Response();
+        $response->setJsonContent($data)->setHeader("Content-type", "application/json");
+        return $response;
     }
     
 }

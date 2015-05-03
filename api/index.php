@@ -77,7 +77,6 @@ $app->mount($usuarios);
 
 //-------------------Busca---------------------------------
 $busca = new MicroCollection();
-$prTr = new ProvaTrabalho();
 $busca->setHandler("ProvaTrabalhoController")->setLazy(true);
 //Adiciona o prefixo /v1/u
 $busca->setPrefix("/v1/search");
@@ -94,7 +93,9 @@ $app->mount($busca);
 
 //-------------------404------------------------------------
 $app->notFound(function () use ($app) {
-    $app->response->setStatusCode(404, "Not Found")->sendHeaders();
+    $app->response->setStatusCode(404, "Not Found")
+        ->setHeader("Content-type", "application/json")
+        ->sendHeaders();
     echo json_encode(array("status" => "PAGE-NOT-FOUND"));
 });
 
