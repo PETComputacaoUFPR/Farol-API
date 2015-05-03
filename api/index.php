@@ -75,6 +75,23 @@ $usuarios->delete("/{id:[0-9]+}", "delete");                //D
 
 $app->mount($usuarios);
 
+//-------------------Busca---------------------------------
+$busca = new MicroCollection();
+$prTr = new ProvaTrabalho();
+$busca->setHandler("ProvaTrabalhoController")->setLazy(true);
+//Adiciona o prefixo /v1/u
+$busca->setPrefix("/v1/search");
+
+$urlBusca = "/{provaTrabalho}"
+            ."[/]?{materia}"
+            ."[/]?{professor}"
+            ."[/]?{ano}"
+            ."[/]?{semestre}";
+
+$busca->get($urlBusca, "search");
+
+$app->mount($busca);
+
 //-------------------404------------------------------------
 $app->notFound(function () use ($app) {
     $app->response->setStatusCode(404, "Not Found")->sendHeaders();
