@@ -15,6 +15,7 @@ class UsuarioController extends Controller{
         $usuario->setModerador($jsonObject->moderador);
         
         $response = new Response();
+        $response->setHeader("Content-type", "application/json");
         if($usuario->save()){
             $response->setStatusCode(201, "Created");
             $response->setJsonContent(array("status" => "OK", "data" => $jsonObject));
@@ -34,6 +35,7 @@ class UsuarioController extends Controller{
         $jsonObject = $this->app->request->getJsonRawBody();
         $usuario = Usuario::findFirst($id);
         $response = new Response();
+        $response->setHeader("Content-type", "application/json");
         
         if(!$usuario){
             $response->setJsonContent(array("status"=>"NOT-FOUND"));
@@ -68,7 +70,9 @@ class UsuarioController extends Controller{
                 'moderador' => $usuario->isModerador()
             );
         }
-        echo json_encode($data);
+        $response = new Response();
+        $response->setJsonContent($data)->setHeader("Content-type", "application/json");
+        return $response;
     }
     
     public function retrieveAllByType($tipo = null){
@@ -88,12 +92,15 @@ class UsuarioController extends Controller{
                 'moderador' => $usuario->isModerador()
             );
         }
-        echo json_encode($data);
+        $response = new Response();
+        $response->setJsonContent($data)->setHeader("Content-type", "application/json");
+        return $response;
     }
     
     public function retrieveById($id){
         $usuario = Usuario::findFirst($id);
         $response = new Response();
+        $response->setHeader("Content-type", "application/json");
         
         if(!$usuario){
             $response->setJsonContent(array("status" => "NOT-FOUND"));
@@ -116,6 +123,7 @@ class UsuarioController extends Controller{
     public function delete($id){
         $usuario = Usuario::findFirst($id);
         $response = new Response();
+        $response->setHeader("Content-type", "application/json");
         
         if(!$usuario){
             $response->setJsonContent(array("status" => "NOT-FOUND"));
