@@ -1,7 +1,7 @@
 <?php
 require('vendor/autoload.php');
 
-class MateriaTest extends PHPUnit_Framework_TestCase {
+class ProfessorTest extends PHPUnit_Framework_TestCase {
     protected $client;
     
     protected function setUp(){
@@ -12,19 +12,19 @@ class MateriaTest extends PHPUnit_Framework_TestCase {
     }
     
     public function testGetAll(){
-        $response = $this->client->get("/api/v1/materias/");
+        $response = $this->client->get("/api/v1/professores/");
         
         $this->assertEquals(200, $response->getStatusCode());
         
         $data = $response->json();
         $this->assertInternalType('array', $data);
-        //Com o SQL básico, há 51 matérias. Cuidado com erros gerados ao inserir
-        //ou remover matérias
-        $this->assertEquals(51, count($data));
+        //Com o SQL básico, há 40 professores. Cuidado com erros gerados ao inserir
+        //ou remover professores
+        $this->assertEquals(40, count($data));
     }
     
-    public function testGetOnlyCI055(){
-        $response = $this->client->get("/api/v1/materias/ci055");
+    public function testGetOnly25(){
+        $response = $this->client->get("/api/v1/professores/25");
         
         $this->assertEquals(200, $response->getStatusCode());
         
@@ -33,12 +33,12 @@ class MateriaTest extends PHPUnit_Framework_TestCase {
         $this->assertArrayHasKey('status', $data);
         $this->assertEquals('FOUND', $data['status']);
         $this->assertArrayHasKey('data', $data);
-        $materia = $data['data'];
-        $this->assertEquals('CI055', $materia['codigo']);
+        $professor = $data['data'];
+        $this->assertEquals('Luis Allan Kunzle', $professor['nome']);
     }
     
-    public function testGetMateriaInexistente(){
-        $response = $this->client->get("/api/v1/materias/ab000");
+    public function testGetProfessorInexistente(){
+        $response = $this->client->get("/api/v1/professores/0");
         
         $this->assertEquals(200, $response->getStatusCode());
         
@@ -48,40 +48,23 @@ class MateriaTest extends PHPUnit_Framework_TestCase {
         $this->assertEquals('NOT-FOUND', $data['status']);
     }
     
-    public function testSearchAlg(){
-        //Pega as máterias de algoritmos, grafos, análise, algebra e introdução
-        $response = $this->client->get("/api/v1/materias/search/alg");
+    public function testSearchAle(){
+        $response = $this->client->get("/api/v1/professores/search/ale");
         
         $this->assertEquals(200, $response->getStatusCode());
         
         $data = $response->json();
         
         $this->assertInternalType('array', $data);
-        $this->assertEquals(7, count($data));
+        $this->assertEquals(2, count($data));
     }
     
-    public function testSearchAlgoritmos(){
-        //Pega as 3 máterias de algoritmos
-        $response = $this->client->get("/api/v1/materias/search/algo/ci05");
-        
-        $this->assertEquals(200, $response->getStatusCode());
-        
-        $data = $response->json();
-        
-        $this->assertInternalType('array', $data);
-        $this->assertEquals(3, count($data));
-        $materia = $data[0]; //Alg I
-        $this->assertArrayHasKey('codigo', $materia);
-        $this->assertEquals('CI055', $materia['codigo']);
-    }
-    
-    public function testCreateMateria(){
-        $materia = array(
-            "codigo"    => "ab0", 
-            "nome"      => "Tópicos Avançados em Testes Unitários"
+    public function testCreateProfessor(){
+        $professor = array(
+            "nome"  => "Wasd Asd"
         );
-        $response = $this->client->post("/api/v1/materias", [
-            "json" => $materia
+        $response = $this->client->post("/api/v1/professores", [
+            "json" => $professor
         ]);
         
         $this->assertEquals(201, $response->getStatusCode());
@@ -90,16 +73,17 @@ class MateriaTest extends PHPUnit_Framework_TestCase {
         $this->assertArrayHasKey('status', $data);
         $this->assertEquals('OK', $data['status']);
         $this->assertArrayHasKey('data', $data);
-        $this->assertEquals($materia, $data['data']);
+        $this->assertEquals($professor['nome'], $data['data']['nome']);
     }
     
-    public function testUpdateMateria(){
-        $materia = array(
-            "codigo"    => "ab0", 
-            "nome"      => "Tópicos Avançados em Zoeiras Unitárias"
+    public function testUpdateProfessor(){
+        $lastId = end($this->client->get("/api/v1/professores")->json())['id'];
+        $professor = array(
+            "id"    => $lastId,
+            "nome"  => "Wasd Asd Qwerty"
         );
-        $response = $this->client->put("/api/v1/materias/ab0", array(
-            "json" => $materia
+        $response = $this->client->put("/api/v1/professores/".$lastId, array(
+            "json" => $professor
         ));
         
         $this->assertEquals(200, $response->getStatusCode());
@@ -109,13 +93,13 @@ class MateriaTest extends PHPUnit_Framework_TestCase {
         $this->assertEquals('OK', $data['status']);
     }
     
-    public function testUpdateMateriaInexistente(){
-        $materia = array(
-            "codigo"    => "ab000",
-            "nome"      => "Algoritmos Literários"
+    public function testUpdateProfessorInexistente(){
+        $professor = array(
+            "id"    => 0,
+            "nome"  => "Mosd"
         );
-        $response = $this->client->put("/api/v1/materias/ab000", array(
-            "json" => $materia
+        $response = $this->client->put("/api/v1/professores/0", array(
+            "json" => $professor
         ));
         
         $this->assertEquals(200, $response->getStatusCode());
@@ -125,8 +109,9 @@ class MateriaTest extends PHPUnit_Framework_TestCase {
         $this->assertEquals('NOT-FOUND', $data['status']);
     }
     
-    public function testDeleteMateria(){
-        $response = $this->client->delete("/api/v1/materias/ab0");
+    public function testDeleteProfessor(){
+        $lastId = end($this->client->get("/api/v1/professores")->json())['id'];
+        $response = $this->client->delete("/api/v1/professores/".$lastId);
         
         $this->assertEquals(200, $response->getStatusCode());
         $data = $response->json();
@@ -135,8 +120,8 @@ class MateriaTest extends PHPUnit_Framework_TestCase {
         $this->assertEquals('OK', $data['status']);
     }
     
-    public function testDeleteMateriaInexistente(){
-        $response = $this->client->delete("/api/v1/materias/ab000");
+    public function testDeleteProfessorInexistente(){
+        $response = $this->client->delete("/api/v1/professores/0");
         
         $this->assertEquals(200, $response->getStatusCode());
         $data = $response->json();

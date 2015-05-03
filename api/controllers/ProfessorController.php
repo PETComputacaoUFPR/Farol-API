@@ -11,6 +11,7 @@ class ProfessorController extends Controller{
         $professor->setNome($jsonObject->nome);
         
         $response = new Response();
+        $response->setHeader("Content-type", "application/json");
         if($professor->save()){
             $response->setStatusCode(201, "Created");
             $response->setJsonContent(array("status" => "OK", "data" => $jsonObject));
@@ -30,6 +31,7 @@ class ProfessorController extends Controller{
         $jsonObject = $this->app->request->getJsonRawBody();
         $professor = Professor::findFirst($id);
         $response = new Response();
+        $response->setHeader("Content-type", "application/json");
         
         if(!$professor){
             $response->setJsonContent(array("status"=>"NOT-FOUND"));
@@ -58,12 +60,15 @@ class ProfessorController extends Controller{
                 'nome'  => $professor->getNome()
             );
         }
-        echo json_encode($data);
+        $response = new Response();
+        $response->setJsonContent($data)->setHeader("Content-type", "application/json");
+        return $response;
     }
     
     public function retrieveById($id){
         $professor = Professor::findFirst($id);
         $response = new Response();
+        $response->setHeader("Content-type", "application/json");
         
         if(!$professor){
             $response->setJsonContent(array("status" => "NOT-FOUND"));
@@ -83,6 +88,7 @@ class ProfessorController extends Controller{
     public function delete($id){
         $professor = Professor::findFirst($id);
         $response = new Response();
+        $response->setHeader("Content-type", "application/json");
         
         if(!$professor){
             $response->setJsonContent(array("status" => "NOT-FOUND"));
@@ -115,7 +121,9 @@ class ProfessorController extends Controller{
             );
         }
         
-        echo json_encode($data);
+        $response = new Response();
+        $response->setJsonContent($data)->setHeader("Content-type", "application/json");
+        return $response;
     }
     
 }
