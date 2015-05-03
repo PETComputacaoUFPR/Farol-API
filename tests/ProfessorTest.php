@@ -1,6 +1,4 @@
 <?php
-require('vendor/autoload.php');
-
 class ProfessorTest extends PHPUnit_Framework_TestCase {
     protected $client;
     

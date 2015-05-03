@@ -1,5 +1,4 @@
 <?php
-require('vendor/autoload.php');
 
 class MateriaTest extends PHPUnit_Framework_TestCase {
     protected $client;
