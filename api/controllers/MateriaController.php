@@ -103,11 +103,17 @@ class MateriaController extends Controller{
         return $response;
     }
     
-    public function search($query){
+    public function search($nome="", $codigo=""){
         $data = array();
+        $conditions = ($nome ? "nome LIKE ?1 AND " : "")
+                     .($codigo ? "codigo LIKE ?2" : "1 = 1");
+        $bind = array();
+        $nome ? $bind[1] = "%".$nome."%" : "";
+        $codigo ? $bind[2] = "%".$codigo."%" : "";
+        
         $materias = Materia::find(array(
-            "conditions"    => "nome like ?1 OR codigo like ?2",
-            "bind"          => array(1 => "%".$query."%", 2 => "%".$query."%")
+            "conditions"    => $conditions,
+            "bind"          => $bind
         ));
         foreach($materias as $materia){
             $data[] = array(

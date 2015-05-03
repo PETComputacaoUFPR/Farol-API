@@ -41,7 +41,7 @@ $materias->get("/", "retrieveAll");                                         //R
 $materias->get("/{codigo:[a-zA-Z][a-zA-Z][0-9]+}", "retrieveByCodigo");
 $materias->put("/{codigo:[a-zA-Z][a-zA-Z][0-9]+}", "update");               //U
 $materias->delete("/{codigo:[a-zA-Z][a-zA-Z][0-9]+}", "delete");            //D
-$materias->get("/search/{query:[a-zA-Z0-9]+}", "search");
+$materias->get("/search/{nome}[/]?{codigo}", "search");
 
 $app->mount($materias);
 
@@ -56,7 +56,7 @@ $professores->get("/", "retrieveAll");                      //R
 $professores->get("/{id:[0-9]+}", "retrieveById");
 $professores->put("/{id:[0-9]+}", "update");                //U
 $professores->delete("/{id:[0-9]+}", "delete");             //D
-$professores->get("/search/{nome:[a-zA-Z]+}", "searchByNome");
+$professores->get("/search/{nome}", "searchByNome");
 
 $app->mount($professores);
 
