@@ -4,7 +4,7 @@ class ProfessorTest extends PHPUnit_Framework_TestCase {
     
     protected function setUp(){
         $this->client = new GuzzleHttp\Client(array(
-            "base_url"  => "https://farol-vytorcalixto.c9.io",
+            "base_url"  => "http://localhost",
             "defaults"  => ["exceptions" => false]
         ));
     }
