@@ -24,7 +24,6 @@ before_script:
   - sudo killall php5-fpm
   - sudo killall php-fpm
   - sudo killall apache2
-  - sudo php-fpm
   - sudo apache2
   
   # configure apache virtual hosts
