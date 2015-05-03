@@ -1,0 +1,35 @@
+language: php
+
+php:
+  - 5.3
+  - 5.4
+  - 5.5
+  - 5.6
+
+mysql:
+ database: 'farolDB'
+ username: 'root'
+ enconding: 'utf8'
+
+before_script:
+  - mysql --user=root --password="" < farol.sql
+  - sed -s 's/https:\/\/farol-vytorcalixto.c9.io/http:\/\/localhost/' -i tests/*
+  - curl --version
+  - pear config-set php_ini ~/.phpenv/versions/`php -r 'echo phpversion();'`/etc/php.ini || echo 'Error modifying PEAR'
+  - pecl install uri_template || echo 'Error installing uri_template'
+  - composer self-update
+  - composer install --no-interaction --prefer-source
+  - sudo apt-get update && sudo apt-get install apache2 libapache2-mod-fastcgi
+
+  # enable php-fpm
+  - sudo cp ~/.phpenv/versions/$(phpenv version-name)/etc/php-fpm.conf.default ~/.phpenv/versions/$(phpenv version-name)/etc/php-fpm.conf
+  - sudo a2enmod rewrite actions fastcgi alias
+  - echo "cgi.fix_pathinfo = 1" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini
+  - ~/.phpenv/versions/$(phpenv version-name)/sbin/php-fpm
+  
+  # configure apache virtual hosts
+  - sudo cp -f build/travis-ci-apache /etc/apache2/sites-available/default
+  - sudo sed -e "s?%TRAVIS_BUILD_DIR%?$(pwd)?g" --in-place /etc/apache2/sites-available/default
+  - sudo service apache2 restart
+ 
+script: phpunit
