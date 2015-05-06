@@ -35,7 +35,8 @@ class MateriaController extends Controller{
         $response->setHeader("Content-type", "application/json");
         
         if(!$materia){
-            $response->setJsonContent(array("status"=>"NOT-FOUND"));
+            $response->setStatusCode(404, "Not Found")
+                     ->setJsonContent(array("status"=>"NOT-FOUND"));
             return $response;
         }
         $materia->setNome($jsonObject->nome);
@@ -72,7 +73,9 @@ class MateriaController extends Controller{
         $response->setHeader("Content-type", "application/json");
         
         if(!$materia){
-            $response->setJsonContent(array("status" => "NOT-FOUND"));
+            $response->setStatusCode(404, "Not Found")
+                     ->setJsonContent(array("status" => "NOT-FOUND"));
+            return $response;
         }else{
             $response->setJsonContent(array(
                 "status" => "FOUND",
@@ -92,7 +95,8 @@ class MateriaController extends Controller{
         $response->setHeader("Content-type", "application/json");
         
         if(!$materia){
-            $response->setJsonContent(array("status" => "NOT-FOUND"));
+            $response->setStatusCode(404, "Not Found")
+                     ->setJsonContent(array("status" => "NOT-FOUND"));
             return $response;
         }
         

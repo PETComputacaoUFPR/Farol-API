@@ -38,7 +38,8 @@ class UsuarioController extends Controller{
         $response->setHeader("Content-type", "application/json");
         
         if(!$usuario){
-            $response->setJsonContent(array("status"=>"NOT-FOUND"));
+            $response->setStatusCode(404, "Not Found")
+                     ->setJsonContent(array("status"=>"NOT-FOUND"));
             return $response;
         }
         $usuario->setNome($jsonObject->nome);
@@ -103,7 +104,9 @@ class UsuarioController extends Controller{
         $response->setHeader("Content-type", "application/json");
         
         if(!$usuario){
-            $response->setJsonContent(array("status" => "NOT-FOUND"));
+            $response->setStatusCode(404, "Not Found")
+                     ->setJsonContent(array("status" => "NOT-FOUND"));
+            return $response;
         }else{
             $response->setJsonContent(array(
                 "status" => "FOUND",
@@ -126,7 +129,8 @@ class UsuarioController extends Controller{
         $response->setHeader("Content-type", "application/json");
         
         if(!$usuario){
-            $response->setJsonContent(array("status" => "NOT-FOUND"));
+            $response->setStatusCode(404, "Not Found")
+                     ->setJsonContent(array("status" => "NOT-FOUND"));
             return $response;
         }
         

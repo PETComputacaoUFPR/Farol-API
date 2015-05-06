@@ -34,7 +34,8 @@ class ProfessorController extends Controller{
         $response->setHeader("Content-type", "application/json");
         
         if(!$professor){
-            $response->setJsonContent(array("status"=>"NOT-FOUND"));
+            $response->setStatusCode(404, "Not Found")
+                     ->setJsonContent(array("status"=>"NOT-FOUND"));
             return $response;
         }
         $professor->setNome($jsonObject->nome);
@@ -71,7 +72,9 @@ class ProfessorController extends Controller{
         $response->setHeader("Content-type", "application/json");
         
         if(!$professor){
-            $response->setJsonContent(array("status" => "NOT-FOUND"));
+            $response->setStatusCode(404, "Not Found")
+                     ->setJsonContent(array("status" => "NOT-FOUND"));
+            return $response;
         }else{
             $response->setJsonContent(array(
                 "status" => "FOUND",
@@ -91,7 +94,8 @@ class ProfessorController extends Controller{
         $response->setHeader("Content-type", "application/json");
         
         if(!$professor){
-            $response->setJsonContent(array("status" => "NOT-FOUND"));
+            $response->setStatusCode(404, "Not Found")
+                     ->setJsonContent(array("status" => "NOT-FOUND"));
             return $response;
         }
         
