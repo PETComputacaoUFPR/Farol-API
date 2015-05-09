@@ -75,6 +75,16 @@ $usuarios->delete("/{id:[0-9]+}", "delete");                //D
 
 $app->mount($usuarios);
 
+//-------------------Arquivos------------------------------
+$arquivos = new MicroCollection();
+$arquivos->setHandler("ProvaTrabalhoController")->setLazy(true);
+//Adiciona o prefixo /v1/arquivos
+$arquivos->setPrefix("/v1/arquivos");
+
+$arquivos->post("/", "upload");
+
+$app->mount($arquivos);
+
 //-------------------Busca---------------------------------
 $busca = new MicroCollection();
 $busca->setHandler("ProvaTrabalhoController")->setLazy(true);

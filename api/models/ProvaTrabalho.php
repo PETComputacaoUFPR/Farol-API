@@ -1,8 +1,5 @@
 <?php
 use Phalcon\Mvc\Model;
-use Phalcon\Mvc\Model\Message;
-use Phalcon\Mvc\Model\Validator\Uniqueness;
-use Phalcon\Mvc\Model\Validator\InclusionIn;
 
 class ProvaTrabalho extends Model{
     const PROVA = "prova";
@@ -43,37 +40,6 @@ class ProvaTrabalho extends Model{
         $this->belongsTo("tbMateria_codigo", "Materia", "codigo");
         $this->belongsTo("tbProfessor_id", "Professor", "id");
         $this->belongsTo("tbUsuario_id", "Usuario", "id");
-    }
-    
-    public function validation(){
-        $this->validate(new InclusionIn(
-            array(
-                "field"     => "provaTrabalho",
-                "domain"    => array("prova","trabalho") 
-            )
-        ));
-        
-        $this->validate(new InclusionIn(
-            array(
-                "field"     => "numero",
-                "domain"    => array("1","2","3","final")
-            )
-        ));
-        
-        $this->validate(new InclusionIn(
-            array(
-                "field"     => "status",
-                "domain"    => array("pendente", "aprovado")
-            )
-        ));
-        
-        if($this->ano < 0){
-            $this->appendMessage(new Message("O ano não pode ser negativo"));
-        }
-        
-        if($this->validationHasFailed()){
-            return false;
-        }
     }
     
     //Getters and setters
@@ -163,11 +129,15 @@ class ProvaTrabalho extends Model{
     }
     
     public function isImagem(){
-        return $this->image;
+        return $this->imagem;
     }
     
-    public function setImagem($image){
-        $this->image = $image;
+    public function getImagem(){
+        return $this->isImagem();
+    }
+    
+    public function setImagem($imagem){
+        $this->imagem = $imagem;
         return $this;
     }
 }
