@@ -68,7 +68,7 @@ $usuarios->setPrefix("/v1/u");
 
 $usuarios->post("/", "create");                             //C
 $usuarios->get("/", "retrieveAll");                         //R
-$usuarios->get("/users/{tipo:(admin|moderador)}", "retrieveAllByType");
+$usuarios->get("/users/{tipo:(admin|moderador|normal)}", "retrieveAllByType");
 $usuarios->get("/{id:[0-9]+}", "retrieveById");
 $usuarios->put("/{id:[0-9]+}", "update");                   //U
 $usuarios->delete("/{id:[0-9]+}", "delete");                //D
