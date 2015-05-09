@@ -8,6 +8,10 @@ class ProvaTrabalhoController extends Controller{
     
     public function search($provaTrabalho="", $materia="", $professor="", 
                             $ano=0, $semestre=0){
+        $provaTrabalho = trim($provaTrabalho);
+        $materia = trim($materia);
+        $professor = trim($professor);
+        $ano = ($ano == " " ? 0 : $ano);
         $conditions = ($provaTrabalho ? "provaTrabalho = :provaTrabalho: AND " : "")
                      .($materia ? "tbMateria_codigo LIKE :materia: AND " : "1 = 1 AND ")
                      .($professor ? "tbProfessor_codigo LIKE :professor? AND " : "1=1 AND ")
@@ -40,7 +44,7 @@ class ProvaTrabalhoController extends Controller{
             );
         }
         
-        echo json_encode($data);
+        echo json_encode($data, JSON_PRETTY_PRINT);
     }
     
     public function upload(){
