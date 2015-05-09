@@ -72,7 +72,8 @@ class UsuarioController extends Controller{
             );
         }
         $response = new Response();
-        $response->setJsonContent($data)->setHeader("Content-type", "application/json");
+        $response->setContent(json_encode($data, JSON_PRETTY_PRINT))
+                 ->setContentType("application/json", "UTF-8");
         return $response;
     }
     

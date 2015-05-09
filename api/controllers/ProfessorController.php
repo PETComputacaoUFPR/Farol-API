@@ -62,7 +62,8 @@ class ProfessorController extends Controller{
             );
         }
         $response = new Response();
-        $response->setJsonContent($data)->setHeader("Content-type", "application/json");
+        $response->setContent(json_encode($data, JSON_PRETTY_PRINT))
+                 ->setContentType("application/json", "UTF-8");
         return $response;
     }
     
@@ -114,6 +115,7 @@ class ProfessorController extends Controller{
     
     public function searchByNome($nome){
         $data = array();
+        $nome = trim($nome);
         $professores = Professor::find(array(
             "conditions"    => "nome like ?1",
             "bind"          => array(1 => "%".$nome."%")
@@ -126,7 +128,8 @@ class ProfessorController extends Controller{
         }
         
         $response = new Response();
-        $response->setJsonContent($data)->setHeader("Content-type", "application/json");
+        $response->setContent(json_encode($data, JSON_PRETTY_PRINT))
+                 ->setContentType("application/json", "UTF-8");
         return $response;
     }
     

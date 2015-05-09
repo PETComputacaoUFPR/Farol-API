@@ -63,7 +63,8 @@ class MateriaController extends Controller{
             );
         }
         $response = new Response();
-        $response->setJsonContent($data)->setHeader("Content-type", "application/json");
+        $response->setContent(json_encode($data, JSON_PRETTY_PRINT))
+                 ->setContentType("application/json", "UTF-8");
         return $response;
     }
     
@@ -114,6 +115,9 @@ class MateriaController extends Controller{
     }
     
     public function search($nome="", $codigo=""){
+        $nome = trim($nome);
+        $codigo = trim($codigo);
+        
         $conditions = ($nome ? "nome LIKE :nome: AND " : "")
                      .($codigo ? "codigo LIKE :codigo:" : "1 = 1");
         $bind = array();
@@ -134,7 +138,8 @@ class MateriaController extends Controller{
         }
         
         $response = new Response();
-        $response->setJsonContent($data)->setHeader("Content-type", "application/json");
+        $response->setContent(json_encode($data, JSON_PRETTY_PRINT))
+                 ->setContentType("application/json", "UTF-8");
         return $response;
     }
     
