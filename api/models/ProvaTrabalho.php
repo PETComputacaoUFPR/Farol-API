@@ -140,5 +140,20 @@ class ProvaTrabalho extends Model{
         $this->imagem = $imagem;
         return $this;
     }
+    
+    public function setMateria($codigo){
+        $this->tbMateria_codigo = $codigo;
+        return $this;
+    }
+    
+    public function setProfessor($id){
+        $this->tbProfessor_id = $id;
+        return $this;
+    }
+    
+    public function setUsuario($id){
+        $this->tbUsuario_id = $id;
+        return $this;
+    }
 }
 ?>

@@ -24,6 +24,39 @@ class ProvaTrabalhoController extends Controller{
         return $response;
     }
     
+    public function update($id){
+        $jsonObject = $this->app->request->getJsonRawBody();
+        $arquivo = ProvaTrabalho::findFirstById($id);
+        $response = new Response();
+        $response->setContentType("application/json", "UTF-8");
+        
+        if(!$arquivo){
+            $response->setStatusCode(404, "Not Found")
+                     ->setJsonContent(array("status" => "NOT-FOUND"));
+        }
+        
+        $arquivo->setProvaTrabalho($jsonObject->provaTrabalho);
+        $arquivo->setNumero($jsonObject->numero);
+        $arquivo->setSubstitutiva($jsonObject->substitutiva);
+        $arquivo->setAno($jsonObject->ano);
+        $arquivo->setSemestre($jsonObject->semestre);
+        $arquivo->setMateria($jsonObject->materia);
+        $arquivo->setProfessor($jsonObject->professor);
+        $arquivo->setUsuario($jsonObject->usuario);
+        
+        if($arquivo->update()){
+            $response->setJsonContent(array("status" => "OK"));
+        }else{
+            $response->setStatusCode(409, "Conflict");
+            $errors = array();
+            foreach ($status->getMessages() as $message) {
+                $errors[] = $message->getMessage();
+            }
+            $response->setJsonContent(array('status' => 'ERROR', 'messages' => $errors));
+        }
+        return $response;
+    }
+    
     public function search($provaTrabalho="", $materia="", $professor="", 
                             $ano=0, $semestre=0){
         $provaTrabalho = trim($provaTrabalho);
@@ -43,22 +76,28 @@ class ProvaTrabalhoController extends Controller{
         $semestre       ? $bind["semestre"] = $semestre : "";
         
         //provas e trabalhos
-        $prsTrs = ProvaTrabalho::find(array(
+        $arquivos = ProvaTrabalho::find(array(
             "conditions"    => $conditions,
             "bind"          => $bind
         ));
         
         $data = array();
         
-        foreach($prsTrs as $prTr){
+        foreach($arquivos as $arquivo){
+            $materia = ($arquivo->getMateria()? $arquivo->getMateria()->getNome() : null);
+            $professor = ($arquivo->getProfessor()? $arquivo->getProfessor()->getNome() : null);
+            $usuario = ($arquivo->getUsuario()? $arquivo->getUsuario()->getNome() : null);
             $data[] = array(
-                "id"            => $prTr->getId(),
-                "provaTrabalho" => $prTr->getProvaTrabalho(),
-                "numero"        => $prTr->getNumero(),
-                "substitutiva"  => $prTr->isSubstitutiva(),
-                "ano"           => $prTr->getAno(),
-                "semestre"      => $prTr->getSemestre(),
-                "arquivo"       => $prTr->getArquivo()
+                "id"            => $arquivo->getId(),
+                "provaTrabalho" => $arquivo->getProvaTrabalho(),
+                "numero"        => $arquivo->getNumero(),
+                "substitutiva"  => $arquivo->isSubstitutiva(),
+                "ano"           => $arquivo->getAno(),
+                "semestre"      => $arquivo->getSemestre(),
+                "arquivo"       => $arquivo->getArquivo(),
+                "materia"       => $materia,
+                "professor"     => $professor,
+                "usuario"       => $usuario
             );
         }
         
