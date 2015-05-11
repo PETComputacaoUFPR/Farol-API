@@ -94,7 +94,7 @@ class ProvaTrabalhoController extends Controller{
         $extensao = strrchr($nome, '.');
         $extensao = strtolower($extensao);
         $errors = array();
-        $id = 0;
+        $id = -1;
         
         if(strstr('.jpg;.jpeg;.gif;.png', $extensao)){
             $novoNome = md5(microtime()).$extensao;
@@ -115,6 +115,8 @@ class ProvaTrabalhoController extends Controller{
             }else{
                 $errors[] = "Não foi possível mover o arquivo para o destino";
             }
+        }else{
+            $errors[] = "O arquivo não é suportado no momento";
         }
         
         return array(
