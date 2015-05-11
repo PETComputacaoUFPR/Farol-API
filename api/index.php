@@ -107,7 +107,7 @@ $app->mount($busca);
 //-------------------404------------------------------------
 $app->notFound(function () use ($app) {
     $app->response->setStatusCode(404, "Not Found")
-        ->setHeader("Content-type", "application/json")
+        ->setContentType("application/json", "UTF-8")
         ->sendHeaders();
     echo json_encode(array("status" => "PAGE-NOT-FOUND"));
 });

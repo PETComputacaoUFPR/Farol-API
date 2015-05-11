@@ -130,7 +130,7 @@ class ProvaTrabalhoController extends Controller{
         }
         
         $response = new Response();
-        $response->setContent(json_encode($data, JSON_PRETTY_PRINT))
+        $response->setContent(json_encode($data)
                  ->setContentType("application/json", "UTF-8");
         return $response;
     }
@@ -147,7 +147,7 @@ class ProvaTrabalhoController extends Controller{
                 }
             }
             $data = array("status" => "OK", "files" => $files);
-            $response->setContent(json_encode($data, JSON_PRETTY_PRINT));
+            $response->setContent(json_encode($data));
             return $response;
         }
         
