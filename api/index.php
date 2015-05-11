@@ -82,6 +82,7 @@ $arquivos->setHandler("ProvaTrabalhoController")->setLazy(true);
 $arquivos->setPrefix("/v1/arquivos");
 
 $arquivos->post("/", "upload");
+$arquivos->get("/{id:[0-9]+}", "retrieveById");
 
 $app->mount($arquivos);
 

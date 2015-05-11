@@ -6,6 +6,24 @@ use Phalcon\Http\Response;
 class ProvaTrabalhoController extends Controller{
     private $uploadDir = "../uploads/";
     
+    public function retrieveById($id){
+        $arquivo = ProvaTrabalho::findFirstById($id);
+        $response = new Response();
+        
+        if(!$arquivo){
+            $response->setContentType("application/json", "UTF-8")
+                     ->setStatusCode(404, "Not Found")
+                     ->setJsonContent(array("status" => "NOT-FOUND"));
+            return $response;
+        }
+        
+        //TODO: colocar o content type correto
+        $response->setContentType("image/jpeg");
+        $url = "http://". $_SERVER['SERVER_NAME'].$_SERVER['SERVER_URI'];
+        $response->setContent(file_get_contents($url.$arquivo->getArquivo()));
+        return $response;
+    }
+    
     public function search($provaTrabalho="", $materia="", $professor="", 
                             $ano=0, $semestre=0){
         $provaTrabalho = trim($provaTrabalho);
@@ -44,7 +62,10 @@ class ProvaTrabalhoController extends Controller{
             );
         }
         
-        echo json_encode($data, JSON_PRETTY_PRINT);
+        $response = new Response();
+        $response->setContent(json_encode($data, JSON_PRETTY_PRINT))
+                 ->setContentType("application/json", "UTF-8");
+        return $response;
     }
     
     public function upload(){
@@ -93,6 +114,8 @@ class ProvaTrabalhoController extends Controller{
                         $errors[] = $message->getMessage();
                     }
                 }
+            }else{
+                $errors[] = "Não foi possível mover o arquivo para o destino";
             }
         }
         return $errors;
