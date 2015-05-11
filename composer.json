@@ -1,13 +1,18 @@
 {
-    "name": "MVCTest",
-    "repositories": [
+    "name": "PETComputacaoUFPR/Farol",
+    "description": "Sistema para controle do repositório digital de provas e trabalhos",
+    "keywords": ["php", "ufpr", "rest", "api"],
+    "authors": [
         {
-            "url": "git@gitlab.c3sl.ufpr.br:pet/fmvc.git",
-            "type": "git"
+            "name": "PET Computação UFPR",
+            "email": "pet@inf.ufpr.br"
         }
     ],
     "require": {
-        "FrameworkMvc": "dev-master",
-        "php": ">=5.2.8"
+        "php": ">=5.4"
+    },
+    "require-dev": {
+        "guzzlehttp/guzzle": "~5.0",
+        "phpunit/phpunit": "4.6.*"
     }
 }
