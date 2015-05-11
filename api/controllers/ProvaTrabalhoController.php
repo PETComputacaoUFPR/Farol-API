@@ -57,6 +57,34 @@ class ProvaTrabalhoController extends Controller{
         return $response;
     }
     
+    public function delete($id){
+        $arquivo = ProvaTrabalho::findFirst($id);
+        $response = new Response();
+        $response->setContentType("application/json", "UTF-8");
+        
+        if(!$arquivo){
+            $response->setStatusCode(404, "Not Found")
+                     ->setJsonContent(array("status" => "NOT-FOUND"));
+            return $response;
+        }
+        
+        $filePath = $arquivo->getArquivo();
+        
+        if($arquivo->delete()){
+            unlink("..".$filePath);
+            $response->setJsonContent(array("status" => "OK"));
+        }else{
+            $response->setStatusCode(409, "Conflict");
+            $errors = array();
+            foreach ($materia->getMessages() as $message) {
+                $errors[] = $message->getMessage();
+            }
+            $response->setJsonContent(array('status' => 'ERROR', 'messages' => $errors));
+        }
+        
+        return $response;
+    }
+    
     public function search($provaTrabalho="", $materia="", $professor="", 
                             $ano=0, $semestre=0){
         $provaTrabalho = trim($provaTrabalho);

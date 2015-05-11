@@ -58,7 +58,9 @@ class ProvaTrabalho extends Model{
     }
     
     public function setNome($nome){
-        $this->nome = $nome;
+        if($nome){
+            $this->nome = $nome;
+        }
         return $this;
     }
     
@@ -67,7 +69,9 @@ class ProvaTrabalho extends Model{
     }
     
     public function setProvaTrabalho($provaTrabalho){
-        $this->provaTrabalho = $provaTrabalho;
+        if($provaTrabalho){
+            $this->provaTrabalho = $provaTrabalho;
+        }
         return $this;
     }
     
@@ -76,7 +80,9 @@ class ProvaTrabalho extends Model{
     }
     
     public function setNumero($numero){
-        $this->numero = $numero;
+        if($numero){
+            $this->numero = $numero;
+        }
         return $this;
     }
     
@@ -85,7 +91,9 @@ class ProvaTrabalho extends Model{
     }
     
     public function setSubstitutiva($substitutiva){
-        $this->substitutiva = $substitutiva;
+        if($substitutiva){
+            $this->substitutiva = $substitutiva;
+        }
         return $this;
     }
     
@@ -94,10 +102,11 @@ class ProvaTrabalho extends Model{
     }
     
     public function setAno($ano){
-        if($ano < 0){
+        if($ano && $ano > 0){
+            $this->ano = $ano;
+        }else{
             throw new \InvalidArgumentException('ProvaTrabalho.ano não pode ser negativo');
         }
-        $this->ano = $ano;
         return $this;
     }
     
@@ -106,7 +115,9 @@ class ProvaTrabalho extends Model{
     }
     
     public function setSemestre($semestre){
-        $this->semestre = $semestre;
+        if($semestre){
+            $this->semestre = $semestre;
+        }
         return $this;
     }
     
@@ -124,16 +135,14 @@ class ProvaTrabalho extends Model{
     }
     
     public function setStatus($status){
-        $this->status = $status;
+        if($status){
+            $this->status = $status;
+        }
         return $this;
     }
     
     public function isImagem(){
         return $this->imagem;
-    }
-    
-    public function getImagem(){
-        return $this->isImagem();
     }
     
     public function setImagem($imagem){
@@ -142,17 +151,32 @@ class ProvaTrabalho extends Model{
     }
     
     public function setMateria($codigo){
-        $this->tbMateria_codigo = $codigo;
+        if($codigo){
+            $materia = Materia::findFirstByCodigo($codigo);
+            if($materia){
+                $this->tbMateria_codigo = $codigo;
+            }
+        }
         return $this;
     }
     
     public function setProfessor($id){
-        $this->tbProfessor_id = $id;
+        if($id){
+            $professor = Professor::findFirst($id);
+            if($professor){
+                $this->tbProfessor_id = $id;
+            }
+        }
         return $this;
     }
     
     public function setUsuario($id){
-        $this->tbUsuario_id = $id;
+        if($id){
+            $usuario = Usuario::findFirst($id);
+            if($usuario){
+                $this->tbUsuario_id = $id;
+            }
+        }
         return $this;
     }
 }
