@@ -76,12 +76,7 @@ class ProvaTrabalhoController extends Controller{
             $files = array();
             foreach($this->request->getUploadedFiles() as $file){
                 if($file->getError() == 0){
-                    $err = $this->saveFile($file);
-                    $files[] = array(
-                        "name"              => $file->getName(),
-                        "error"             => (count($err) > 0),
-                        "error-messages"    => $err
-                    );
+                    $files[] = $this->saveFile($file);
                 }
             }
             $data = array("status" => "OK", "files" => $files);
@@ -99,6 +94,7 @@ class ProvaTrabalhoController extends Controller{
         $extensao = strrchr($nome, '.');
         $extensao = strtolower($extensao);
         $errors = array();
+        $id = 0;
         
         if(strstr('.jpg;.jpeg;.gif;.png', $extensao)){
             $novoNome = md5(microtime()).$extensao;
@@ -113,12 +109,20 @@ class ProvaTrabalhoController extends Controller{
                     foreach($arquivo->getMessages() as $message){
                         $errors[] = $message->getMessage();
                     }
+                }else{
+                    $id = $arquivo->getId();
                 }
             }else{
                 $errors[] = "Não foi possível mover o arquivo para o destino";
             }
         }
-        return $errors;
+        
+        return array(
+            "name"      => $nome,
+            "id"        => $id,
+            "error"     => (count($errors) > 0),
+            "errors"    => $errors
+        );
     }
     
 }
