@@ -1,5 +1,5 @@
 # Farol
-### Repositório de provas e trabalhos
+### API REST para repositório de provas e trabalhos
 
 [![Issues](https://img.shields.io/github/issues/PETComputacaoUFPR/Farol.svg?style=flat-square)](https://github.com/PETComputacaoUFPR/Farol/issues)
 [![Stars](https://img.shields.io/github/stars/PETComputacaoUFPR/Farol.svg?style=flat-square)](https://github.com/PETComputacaoUFPR/Farol/stargazers)
