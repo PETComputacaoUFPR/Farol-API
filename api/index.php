@@ -40,7 +40,9 @@ $app->before(function() use ($app) {
 });
 
 $app->options('/{catch:(.*)}', function() use ($app) { 
-    $app->response->setStatusCode(200, "OK")->send();
+    $response = new Response();
+    $response->setStatusCode(200, "OK");
+    return $response;
 });
 
 //-------------------Matérias----------------------------
