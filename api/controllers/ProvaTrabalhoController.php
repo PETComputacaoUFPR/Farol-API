@@ -24,6 +24,33 @@ class ProvaTrabalhoController extends Controller{
         return $response;
     }
     
+    public function retrieveByStatus($status){
+        $data = array();
+        
+        foreach(ProvaTrabalho::find("status = '$status'") as $arquivo){
+            $materia = ($arquivo->getMateria()? $arquivo->getMateria() : null);
+            $professor = ($arquivo->getProfessor()? $arquivo->getProfessor() : null);
+            $usuario = ($arquivo->getUsuario()? $arquivo->getUsuario()->setSenha('') : null);
+            $data[] = array(
+                "id"            => $arquivo->getId(),
+                "provaTrabalho" => $arquivo->getProvaTrabalho(),
+                "numero"        => $arquivo->getNumero(),
+                "substitutiva"  => $arquivo->isSubstitutiva(),
+                "ano"           => $arquivo->getAno(),
+                "semestre"      => $arquivo->getSemestre(),
+                "arquivo"       => $arquivo->getArquivo(),
+                "materia"       => $materia,
+                "professor"     => $professor,
+                "usuario"       => $usuario
+            );
+        }
+        
+        $response = new Response();
+        $response->setContent(json_encode($data)
+                 ->setContentType("application/json", "UTF-8");
+        return $response;
+    }
+    
     public function update($id){
         $jsonObject = $this->app->request->getJsonRawBody();
         $arquivo = ProvaTrabalho::findFirstById($id);
@@ -112,9 +139,9 @@ class ProvaTrabalhoController extends Controller{
         $data = array();
         
         foreach($arquivos as $arquivo){
-            $materia = ($arquivo->getMateria()? $arquivo->getMateria()->getNome() : null);
-            $professor = ($arquivo->getProfessor()? $arquivo->getProfessor()->getNome() : null);
-            $usuario = ($arquivo->getUsuario()? $arquivo->getUsuario()->getNome() : null);
+            $materia = ($arquivo->getMateria()? $arquivo->getMateria() : null);
+            $professor = ($arquivo->getProfessor()? $arquivo->getProfessor() : null);
+            $usuario = ($arquivo->getUsuario()? $arquivo->getUsuario()->setSenha('') : null);
             $data[] = array(
                 "id"            => $arquivo->getId(),
                 "provaTrabalho" => $arquivo->getProvaTrabalho(),

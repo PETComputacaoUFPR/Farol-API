@@ -99,6 +99,7 @@ $arquivos->setPrefix("/v1/arquivos");
 
 $arquivos->post("/", "upload");
 $arquivos->get("/{id:[0-9]+}", "retrieveById");
+$arquivos->get("/status/{status:(pendente|aprovado)}", "retrieveByStatus");
 $arquivos->put("/{id:[0-9]+}", "update");
 $arquivos->delete("/{id:[0-9]+}", "delete");
 
