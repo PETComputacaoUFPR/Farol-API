@@ -46,7 +46,7 @@ class ProvaTrabalhoController extends Controller{
         }
         
         $response = new Response();
-        $response->setContent(json_encode($data)
+        $response->setContent(json_encode($data))
                  ->setContentType("application/json", "UTF-8");
         return $response;
     }
@@ -158,7 +158,7 @@ class ProvaTrabalhoController extends Controller{
         }
         
         $response = new Response();
-        $response->setContent(json_encode($data)
+        $response->setContent(json_encode($data))
                  ->setContentType("application/json", "UTF-8");
         return $response;
     }
