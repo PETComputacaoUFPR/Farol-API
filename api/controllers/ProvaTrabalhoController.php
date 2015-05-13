@@ -122,7 +122,8 @@ class ProvaTrabalhoController extends Controller{
                      .($materia ? "tbMateria_codigo LIKE :materia: AND " : "1 = 1 AND ")
                      .($professor ? "tbProfessor_codigo LIKE :professor? AND " : "1=1 AND ")
                      .($ano ? "ano = :ano: AND " : "1=1 AND ")
-                     .($semestre ? "semestre = :semestre:" : "1=1");
+                     .($semestre ? "semestre = :semestre: " : "1=1 ")
+                     ."status = 'aprovado'";
         $bind = array();
         $provaTrabalho  ? $bind["provaTrabalho"] = $provaTrabalho : "";
         $materia        ? $bind["materia"] = "%".$materia."%" : "";
