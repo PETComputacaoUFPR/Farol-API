@@ -1,6 +1,8 @@
 # Farol
 ### API REST para repositório de provas e trabalhos
 
+[![Join the chat at https://gitter.im/PETComputacaoUFPR/Titanic](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/PETComputacaoUFPR/Titanic?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 [![Issues](https://img.shields.io/github/issues/PETComputacaoUFPR/Farol.svg?style=flat-square)](https://github.com/PETComputacaoUFPR/Farol/issues)
 [![Stars](https://img.shields.io/github/stars/PETComputacaoUFPR/Farol.svg?style=flat-square)](https://github.com/PETComputacaoUFPR/Farol/stargazers)
 
