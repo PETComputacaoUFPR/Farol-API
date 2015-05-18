@@ -1,15 +1,13 @@
-# Farol
+# Titanic
 ### API REST para repositório de provas e trabalhos
 
 [![Join the chat at https://gitter.im/PETComputacaoUFPR/Titanic](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/PETComputacaoUFPR/Titanic?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
-[![Issues](https://img.shields.io/github/issues/PETComputacaoUFPR/Farol.svg?style=flat-square)](https://github.com/PETComputacaoUFPR/Farol/issues)
-[![Stars](https://img.shields.io/github/stars/PETComputacaoUFPR/Farol.svg?style=flat-square)](https://github.com/PETComputacaoUFPR/Farol/stargazers)
-
-[![Join the chat at https://gitter.im/PETComputacaoUFPR/Farol](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/PETComputacaoUFPR/Farol?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+[![Issues](https://img.shields.io/github/issues/PETComputacaoUFPR/Titanic.svg?style=flat-square)](https://github.com/PETComputacaoUFPR/Titanic/issues)
+[![Stars](https://img.shields.io/github/stars/PETComputacaoUFPR/Titanic.svg?style=flat-square)](https://github.com/PETComputacaoUFPR/Titanicstargazers)
 
 ## Sobre este projeto
-O Farol tem como objetivo ser o repositório digital de provas e trabalhos. Você pode enviar ou procurar provas e especificações de trabalhos.
+O Titanic é a API REST para o [Farol](https://github.com/PETComputacaoUFPR/Farol)
 
 ## Baixando e contribuindo
 * Instale o [PhalconPHP](http://phalconphp.com/en/download)
