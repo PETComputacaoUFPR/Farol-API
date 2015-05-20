@@ -46,7 +46,7 @@ class MateriaController extends Controller{
         }else{
             $response->setStatusCode(409, "Conflict");
             $errors = array();
-            foreach ($status->getMessages() as $message) {
+            foreach ($materia->getMessages() as $message) {
                 $errors[] = $message->getMessage();
             }
             $response->setJsonContent(array('status' => 'ERROR', 'messages' => $errors));
