@@ -76,7 +76,7 @@ class ProvaTrabalhoController extends Controller{
         }else{
             $response->setStatusCode(409, "Conflict");
             $errors = array();
-            foreach ($status->getMessages() as $message) {
+            foreach ($arquivo->getMessages() as $message) {
                 $errors[] = $message->getMessage();
             }
             $response->setJsonContent(array('status' => 'ERROR', 'messages' => $errors));
