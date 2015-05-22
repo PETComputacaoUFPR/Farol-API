@@ -123,6 +123,7 @@ $app->mount($busca);
 
 //-------------------404------------------------------------
 $app->notFound(function () use ($app) {
+    $origin = $app->request->getHeader("ORIGIN") ? $app->request->getHeader("ORIGIN") : '*';
     $app->response->setStatusCode(404, "Not Found")
         ->setContentType("application/json", "UTF-8")
         ->setHeader("Access-Control-Allow-Origin", $origin)
