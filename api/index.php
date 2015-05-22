@@ -125,6 +125,10 @@ $app->mount($busca);
 $app->notFound(function () use ($app) {
     $app->response->setStatusCode(404, "Not Found")
         ->setContentType("application/json", "UTF-8")
+        ->setHeader("Access-Control-Allow-Origin", $origin)
+        ->setHeader("Access-Control-Allow-Methods", 'GET,PUT,POST,DELETE,OPTIONS')
+        ->setHeader("Access-Control-Allow-Headers", 'Origin, X-Requested-With, Content-Range, Content-Disposition, Content-Type, Authorization')
+        ->setHeader("Access-Control-Allow-Credentials", true)
         ->sendHeaders();
     echo json_encode(array("status" => "PAGE-NOT-FOUND"));
 });
