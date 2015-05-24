@@ -10,7 +10,7 @@ class UsuarioController extends Controller{
         $usuario = new Usuario();
         $usuario->setNome($jsonObject->nome);
         $usuario->setEmail($jsonObject->email);
-        $usuario->setSenha(md5($jsonObject->senha));
+        $usuario->setSenha($jsonObject->senha);
         $usuario->setAdmin($jsonObject->admin);
         $usuario->setModerador($jsonObject->moderador);
         

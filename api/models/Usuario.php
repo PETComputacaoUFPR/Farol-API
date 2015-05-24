@@ -42,13 +42,19 @@ class Usuario extends Model{
                 "field"             => "senha",
                 "min"               => 8,
                 "max"               => 45,
-                "messageMinimun"    => "Senha deve ter no mínimo 8 caracteres",
-                "messageMaximun"    => "Senha deve ter no máximo 45 caracteres"
+                "messageMinimum"    => "Senha deve ter no mínimo 8 caracteres",
+                "messageMaximum"    => "Senha deve ter no máximo 45 caracteres"
             )
         ));
         
+        if(!preg_match("/[\s\S]*@?ufpr.br/", $this->email)){
+            $this->appendMessage(new Message("Somente são aceitos e-mails da UFPR"));
+        }
+        
         if($this->validationHasFailed()){
             return false;
+        }else{
+            $this->senha = md5($this->senha);
         }
     }
     
