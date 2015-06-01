@@ -1,11 +1,25 @@
 <?php
 
+require __DIR__ . '/../vendor/autoload.php';
+
 use Phalcon\Loader;
 use Phalcon\Mvc\Micro;
 use Phalcon\Mvc\Micro\Collection as MicroCollection;
 use Phalcon\DI\FactoryDefault;
 use Phalcon\Db\Adapter\Pdo\Mysql as PdoMysql;
 use Phalcon\Http\Response;
+
+// OAuth2 server
+$server = new \League\OAuth2\Server\AuthorizationServer;
+
+// TODO: implementar Storage
+
+$passwordGrant = new \League\OAuth2\Server\Grant\PasswordGrant();
+$passwordGrant->setVerifyCredentialsCallback(function ($username, $password) {
+    // TODO: implement logic here to validate a username and password, return an ID if valid, otherwise return false
+});
+
+$server->addGrantType($passwordGrant);
 
 $loader = new Loader();
 

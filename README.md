@@ -12,6 +12,7 @@ O Titanic é a API REST para o [Farol](https://github.com/PETComputacaoUFPR/Faro
 ## Baixando e contribuindo
 * Instale o [PhalconPHP](http://phalconphp.com/en/download)
 * Baixe o repositório com `git clone https://github.com/PETComputacaoUFPR/Farol.git`
+* Instale as dependências com `composer install`
 * Crie um link para uma pasta visível pelo Apache ou outro servidor a escolha
 
 Para fazer uma contribuição dê um fork neste repositório. Não clone e tente enviar.
