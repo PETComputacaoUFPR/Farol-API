@@ -179,7 +179,7 @@ class ProvaTrabalhoController extends Controller{
             return $response;
         }
         
-        return $response->setStatusCode(404, "Not Found")
+        return $response->setStatusCode(409, "Conflict")
                         ->setJsonContent(array("status" => "NO-FILES"));
     }
     

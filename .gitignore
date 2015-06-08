@@ -6,5 +6,6 @@ vendor/
 *.lock
 uploads/*.*
 *.sql
+!farol.sql
 *.map
 */**/.map

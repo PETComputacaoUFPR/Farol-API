@@ -44,7 +44,7 @@ class Usuario extends Model{
                 "max"               => 45,
                 "messageMinimun"    => "Senha deve ter no mínimo 8 caracteres",
                 "messageMaximun"    => "Senha deve ter no máximo 45 caracteres"
-            )
+            )   
         ));
         
         if($this->validationHasFailed()){
@@ -98,7 +98,7 @@ class Usuario extends Model{
     }
     
     public function isModerador(){
-        return $this->moderador;
+        return $this->moderador || $this->admin;
     }
     
     public function setModerador($moderador){

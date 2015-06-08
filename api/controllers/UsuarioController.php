@@ -11,8 +11,8 @@ class UsuarioController extends Controller{
         $usuario->setNome($jsonObject->nome);
         $usuario->setEmail($jsonObject->email);
         $usuario->setSenha(md5($jsonObject->senha));
-        $usuario->setAdmin($jsonObject->admin);
-        $usuario->setModerador($jsonObject->moderador);
+        $usuario->setAdmin(false);
+        $usuario->setModerador(false);
         
         $response = new Response();
         $response->setHeader("Content-type", "application/json");
@@ -145,6 +145,28 @@ class UsuarioController extends Controller{
                 $errors[] = $message->getMessage();
             }
             $response->setJsonContent(array('status' => 'ERROR', 'messages' => $errors));
+        }
+        return $response;
+    }
+    
+    public static function userExists($email, $password) {
+        $usuario = Usuario::findFirstByEmail($email);
+        if($usuario && $usuario->getSenha() == md5($password)) {
+            return $usuario;
+        }
+        return null;
+    }
+    
+    public function login() {
+        $jsonObject = $this->app->request->getJsonRawBody();
+        $usuario = UsuarioController::userExists($jsonObject->email, $jsonObject->password);
+        $response = new Response();
+        $response->setHeader("Content-type", "application/json");
+        if($usuario) {
+            $response->setJsonContent(array("status" => "OK"));
+        } else {
+            $response->setStatusCode(409, "Conflict");
+            $response->setJsonContent(array("status" => "INVALID"));
         }
         return $response;
     }

@@ -6,6 +6,13 @@ use Phalcon\Mvc\Micro\Collection as MicroCollection;
 use Phalcon\DI\FactoryDefault;
 use Phalcon\Db\Adapter\Pdo\Mysql as PdoMysql;
 use Phalcon\Http\Response;
+use Phalcon\Events\Manager as EventsManager;
+
+function startsWith($haystack, $needle)
+{
+     $length = strlen($needle);
+     return (substr($haystack, 0, $length) === $needle);
+}
 
 $loader = new Loader();
 
@@ -29,6 +36,7 @@ $di->set('db', function(){
 $app = new Micro($di);
 $di->set('app', $app, true);
 
+// Cabeçalhos necessário para requisições CORS
 $app->before(function() use ($app) {
     $origin = $app->request->getHeader("ORIGIN") ? $app->request->getHeader("ORIGIN") : '*';
 
@@ -44,6 +52,98 @@ $app->options('/{catch:(.*)}', function() use ($app) {
     $response->setStatusCode(200, "OK");
     return $response;
 });
+
+$eventManager = new EventsManager();
+
+$eventManager->attach('micro', function($event, $app) {
+
+    if ($event->getType() == 'beforeExecuteRoute') {
+        /* Neste momento, uma rota válida foi encontrada. É necessário verificar se
+        *  a rota necessita de autenticação e se os dados do usuário estão corretos,
+        *  caso seja necessário
+        */
+        
+        $usuario = null;
+        $method = $app->__get('request')->getMethod();
+        $route = $app->getRouter()->getRewriteUri();
+        
+        // Basic Auth
+        if($app->request->getServer("PHP_AUTH_USER")) {
+            $email = $app->request->getServer("PHP_AUTH_USER");
+            $password = $app->request->getServer("PHP_AUTH_PW");
+            $usuario = UsuarioController::userExists($email, $password);
+        }
+        
+        // Todas as requisições OPTIONS, retornam true
+        if($method == "OPTIONS") {
+            return true;
+        }
+        
+        // Requisições GET retornam true, exceto algumas rotas
+        if($method == "GET") {
+            if(startsWith($route, "/v1/arquivos/status")) {
+                if(!$usuario || !$usuario->isModerador()) {
+                    $app->response->setStatusCode(401, "UNAUTHORIZED")->send();
+                    return false;
+                }
+            }
+            
+            if(startsWith($route, "/v1/u")) {
+                if(!$usuario || !$usuario->isAdmin()) {
+                    $app->response->setStatusCode(401, "UNAUTHORIZED")->send();
+                    return false;
+                }
+            }
+            
+            return true;
+        }
+        
+        // Requisições do tipo POST e PUT só podem ser feitas por moderadores, com exceções
+        if($method == "POST" || $method == "PUT"){
+            if(startsWith($route, "/v1/u/login")) {
+                return true;
+            }
+            
+            if(!$usuario) {
+                $app->response->setStatusCode(401, "UNAUTHORIZED")->send();
+                return false;
+            }
+            
+            if(startsWith($route, "/v1/arquivos")) {
+                $app->response->setStatusCode(401, "UNAUTHORIZED")->send();
+                return false;
+            }
+            
+            if(startsWith($route, "/v1/u")) {
+                $id = $app->getRouter()->getMatches()[1];
+                // Somente o próprio usuário ou um admin pode alterar um usuário
+                if($id != $usuario->getId() && !$usuario->isAdmin() && $method == "PUT") {
+                    $app->response->setStatusCode(401, "UNAUTHORIZED")->send();
+                    return false;
+                }
+            }
+            
+            if(!$usuario->isModerador()) {
+                $app->response->setStatusCode(401, "UNAUTHORIZED")->send();
+                return false;
+            }
+            
+            return true;
+        }
+        
+        // Requisições do tipo DELETE só podem ser feitas por moderadores
+        if($method == "DELETE" && $usuario->isAdmin()) {
+            return true;
+        }
+        
+        // Qualquer outra coisa e retornamos 401
+        $app->response->setStatusCode(401, "UNAUTHORIZED")->send();
+        return false;
+    }
+
+});
+
+$app->setEventsManager($eventManager);
 
 //-------------------Matérias----------------------------
 $materias = new MicroCollection();
@@ -88,6 +188,8 @@ $usuarios->get("/users/{tipo:(admin|moderador|normal)}", "retrieveAllByType");
 $usuarios->get("/{id:[0-9]+}", "retrieveById");
 $usuarios->put("/{id:[0-9]+}", "update");                   //U
 $usuarios->delete("/{id:[0-9]+}", "delete");                //D
+// "Login": retorna true se o usuário existe, false caso os dados estejam errados
+$usuarios->post("/login", "login");
 
 $app->mount($usuarios);
 
