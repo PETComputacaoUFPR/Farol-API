@@ -5,7 +5,7 @@ class MateriaTest extends PHPUnit_Framework_TestCase {
     
     protected function setUp(){
         $this->client = new GuzzleHttp\Client(array(
-            "base_url"  => "http://localhost",
+            "base_url"  => "http://titanic-vytorcalixto.c9.io",
             "defaults"  => ["exceptions" => false]
         ));
     }
@@ -14,8 +14,6 @@ class MateriaTest extends PHPUnit_Framework_TestCase {
         $response = $this->client->get("/api/v1/materias/");
         
         $this->assertEquals(200, $response->getStatusCode());
-        
-        var_dump($response);
         
         $data = $response->json();
         $this->assertInternalType('array', $data);
@@ -41,7 +39,7 @@ class MateriaTest extends PHPUnit_Framework_TestCase {
     public function testGetMateriaInexistente(){
         $response = $this->client->get("/api/v1/materias/ab000");
         
-        $this->assertEquals(200, $response->getStatusCode());
+        $this->assertEquals(404, $response->getStatusCode());
         
         $data = $response->json();
         
@@ -94,6 +92,26 @@ class MateriaTest extends PHPUnit_Framework_TestCase {
         $this->assertEquals($materia, $data['data']);
     }
     
+    public function testCreateMateriaCodigoInvalido(){
+        $materia = array(
+            "codigo"    => "01ab-",
+            "nome"      => "gLItcHeRROr"
+        );
+        
+        $response = $this->client->post("/api/v1/materias", [
+            "json" => $materia
+        ]);
+        
+        $this->assertEquals(409, $response->getStatusCode());
+        $data = $response->json();
+        
+        $this->assertArrayHasKey("status", $data);
+        $this->assertEquals("ERROR", $data["status"]);
+        $this->assertArrayHasKey("messages", $data);
+        $messages = $data["messages"];
+        $this->assertEquals("O código da matéria é inválido", $messages[0]);
+    }
+    
     public function testUpdateMateria(){
         $materia = array(
             "codigo"    => "ab0", 
@@ -119,7 +137,7 @@ class MateriaTest extends PHPUnit_Framework_TestCase {
             "json" => $materia
         ));
         
-        $this->assertEquals(200, $response->getStatusCode());
+        $this->assertEquals(404, $response->getStatusCode());
         $data = $response->json();
         
         $this->assertArrayHasKey('status', $data);
@@ -139,7 +157,7 @@ class MateriaTest extends PHPUnit_Framework_TestCase {
     public function testDeleteMateriaInexistente(){
         $response = $this->client->delete("/api/v1/materias/ab000");
         
-        $this->assertEquals(200, $response->getStatusCode());
+        $this->assertEquals(404, $response->getStatusCode());
         $data = $response->json();
         
         $this->assertArrayHasKey('status', $data);
