@@ -4,7 +4,7 @@ class ProfessorTest extends PHPUnit_Framework_TestCase {
     
     protected function setUp(){
         $this->client = new GuzzleHttp\Client(array(
-            "base_url"  => "http://localhost",
+            "base_url"  => "http://titanic-vytorcalixto.c9.io",
             "defaults"  => ["exceptions" => false]
         ));
     }
@@ -38,7 +38,7 @@ class ProfessorTest extends PHPUnit_Framework_TestCase {
     public function testGetProfessorInexistente(){
         $response = $this->client->get("/api/v1/professores/0");
         
-        $this->assertEquals(200, $response->getStatusCode());
+        $this->assertEquals(404, $response->getStatusCode());
         
         $data = $response->json();
         
@@ -100,7 +100,7 @@ class ProfessorTest extends PHPUnit_Framework_TestCase {
             "json" => $professor
         ));
         
-        $this->assertEquals(200, $response->getStatusCode());
+        $this->assertEquals(404, $response->getStatusCode());
         $data = $response->json();
         
         $this->assertArrayHasKey('status', $data);
@@ -121,7 +121,7 @@ class ProfessorTest extends PHPUnit_Framework_TestCase {
     public function testDeleteProfessorInexistente(){
         $response = $this->client->delete("/api/v1/professores/0");
         
-        $this->assertEquals(200, $response->getStatusCode());
+        $this->assertEquals(404, $response->getStatusCode());
         $data = $response->json();
         
         $this->assertArrayHasKey('status', $data);
