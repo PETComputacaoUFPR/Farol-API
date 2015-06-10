@@ -11,7 +11,7 @@
          syntaxCheck="false"
 >
     <testsuites>
-        <testsuite name="API Test Suite">
+        <testsuite name="Titanic">
             <directory>./tests/</directory>
         </testsuite>
     </testsuites>
@@ -24,4 +24,8 @@
             </exclude>
         </whitelist>
     </filter>
+
+    <php>
+        <env name="HOST" value="http://titanic.local"/>
+    </php>
 </phpunit>

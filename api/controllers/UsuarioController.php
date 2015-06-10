@@ -4,7 +4,7 @@ use Phalcon\Mvc\Controller;
 use Phalcon\Http\Response;
 
 class UsuarioController extends Controller{
-    
+
     public function create(){
         $jsonObject = $this->app->request->getJsonRawBody();
         $usuario = new Usuario();
@@ -13,7 +13,7 @@ class UsuarioController extends Controller{
         $usuario->setSenha(md5($jsonObject->senha));
         $usuario->setAdmin(false);
         $usuario->setModerador(false);
-        
+
         $response = new Response();
         $response->setHeader("Content-type", "application/json");
         if($usuario->save()){
@@ -27,16 +27,16 @@ class UsuarioController extends Controller{
             }
             $response->setJsonContent(array("status" => "ERROR", "messages" => $errors));
         }
-        
+
         return $response;
     }
-    
+
     public function update($id){
         $jsonObject = $this->app->request->getJsonRawBody();
         $usuario = Usuario::findFirst($id);
         $response = new Response();
         $response->setHeader("Content-type", "application/json");
-        
+
         if(!$usuario){
             $response->setStatusCode(404, "Not Found")
                      ->setJsonContent(array("status"=>"NOT-FOUND"));
@@ -44,9 +44,12 @@ class UsuarioController extends Controller{
         }
         $usuario->setNome($jsonObject->nome);
         $usuario->setEmail($jsonObject->email);
+        if($jsonObject->senha) {
+            $usuario->setSenha($jsonObject->senha);
+        }
         $usuario->setAdmin($jsonObject->admin);
         $usuario->setModerador($jsonObject->moderador);
-        
+
         if($usuario->update()){
             $response->setJsonContent(array("status" => "OK"));
         }else{
@@ -59,7 +62,7 @@ class UsuarioController extends Controller{
         }
         return $response;
     }
-    
+
     public function retrieveAll(){
         $data = array();
         foreach(Usuario::find() as $usuario){
@@ -76,7 +79,7 @@ class UsuarioController extends Controller{
                  ->setContentType("application/json", "UTF-8");
         return $response;
     }
-    
+
     public function retrieveAllByType($tipo = null){
         $data = array();
         $where = "";
@@ -99,12 +102,12 @@ class UsuarioController extends Controller{
                  ->setContentType("application/json", "UTF-8");
         return $response;
     }
-    
+
     public function retrieveById($id){
         $usuario = Usuario::findFirst($id);
         $response = new Response();
         $response->setHeader("Content-type", "application/json");
-        
+
         if(!$usuario){
             $response->setStatusCode(404, "Not Found")
                      ->setJsonContent(array("status" => "NOT-FOUND"));
@@ -121,21 +124,21 @@ class UsuarioController extends Controller{
                 )
             ));
         }
-        
+
         return $response;
     }
-    
+
     public function delete($id){
         $usuario = Usuario::findFirst($id);
         $response = new Response();
         $response->setHeader("Content-type", "application/json");
-        
+
         if(!$usuario){
             $response->setStatusCode(404, "Not Found")
                      ->setJsonContent(array("status" => "NOT-FOUND"));
             return $response;
         }
-        
+
         if($usuario->delete()){
             $response->setJsonContent(array("status" => "OK"));
         }else{
@@ -148,7 +151,7 @@ class UsuarioController extends Controller{
         }
         return $response;
     }
-    
+
     public static function userExists($email, $password) {
         $usuario = Usuario::findFirstByEmail($email);
         if($usuario && $usuario->getSenha() == md5($password)) {
@@ -156,7 +159,7 @@ class UsuarioController extends Controller{
         }
         return null;
     }
-    
+
     public function login() {
         $jsonObject = $this->app->request->getJsonRawBody();
         $usuario = UsuarioController::userExists($jsonObject->email, $jsonObject->password);
@@ -170,7 +173,7 @@ class UsuarioController extends Controller{
         }
         return $response;
     }
-    
+
 }
 
 ?>

@@ -29,8 +29,12 @@ class Materia extends Model implements JsonSerializable{
             array(
                 "field"     => "codigo",
                 "message"   => "O código da matéria deve ser único"
-                )));
+            ))
+        );
 
+        if(!preg_match("/\b[a-zA-Z][a-zA-Z][0-9]+\b/", $this->codigo)){
+            $this->appendMessage(new Message("O código da matéria é inválido"));
+        }
 
         if($this->validationHasFailed()){
             return false;
