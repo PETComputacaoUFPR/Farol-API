@@ -5,28 +5,28 @@ use Phalcon\Http\Response;
 
 class ProvaTrabalhoController extends Controller{
     private $uploadDir = "../uploads/";
-    
+
     public function retrieveById($id){
         $arquivo = ProvaTrabalho::findFirstById($id);
         $response = new Response();
-        
+
         if(!$arquivo){
             $response->setContentType("application/json", "UTF-8")
                      ->setStatusCode(404, "Not Found")
                      ->setJsonContent(array("status" => "NOT-FOUND"));
             return $response;
         }
-        
+
         //TODO: colocar o content type correto
         $response->setContentType("image/jpeg");
         $url = "http://". $_SERVER['SERVER_NAME'].$_SERVER['SERVER_URI'];
         $response->setContent(file_get_contents($url.$arquivo->getArquivo()));
         return $response;
     }
-    
+
     public function retrieveByStatus($status){
         $data = array();
-        
+
         foreach(ProvaTrabalho::find("status = '$status'") as $arquivo){
             $materia = ($arquivo->getMateria()? $arquivo->getMateria() : null);
             $professor = ($arquivo->getProfessor()? $arquivo->getProfessor() : null);
@@ -44,24 +44,58 @@ class ProvaTrabalhoController extends Controller{
                 "usuario"       => $usuario
             );
         }
-        
+
         $response = new Response();
         $response->setContent(json_encode($data))
                  ->setContentType("application/json", "UTF-8");
         return $response;
     }
-    
+
     public function update($id){
         $jsonObject = $this->app->request->getJsonRawBody();
         $arquivo = ProvaTrabalho::findFirstById($id);
         $response = new Response();
         $response->setContentType("application/json", "UTF-8");
-        
+
         if(!$arquivo){
             $response->setStatusCode(404, "Not Found")
                      ->setJsonContent(array("status" => "NOT-FOUND"));
+            return $response;
         }
-        
+
+        $usuario = Usuario::findFirstById($jsonObject->usuarioId);
+
+        /*  Um arquivo só pode ser atualizado nas seguintes situações
+        * 		-- Quando um MODERADOR faz a atualização
+        *   	-- Quando um usuário NORMAL atualiza um arquivo PENDENTE que ELE enviou
+        */
+
+        if(!$usuario) {
+            $response->setStatusCode(401, "Unauthorized")
+                     ->setJsonContent(array("status" => "UNAUTHORIZED"));
+            return $response;
+        }
+
+        if (!$usuario->isModerador()){
+            if($arquivo->getStatus() == ProvaTrabalho::PENDENTE) {
+                if(!$arquivo->getUsuario()) {
+                    $response->setStatusCode(401, "Unauthorized")
+                             ->setJsonContent(array("status" => "UNAUTHORIZED"));
+                    return $response;
+                }
+
+                if($arquivo->getUsuario()->getId() != $usuario->getId()) {
+                    $response->setStatusCode(401, "Unauthorized")
+                             ->setJsonContent(array("status" => "UNAUTHORIZED"));
+                    return $response;
+                }
+            } else {
+                $response->setStatusCode(401, "Unauthorized")
+                         ->setJsonContent(array("status" => "UNAUTHORIZED"));
+                return $response;
+            }
+        }
+
         $arquivo->setProvaTrabalho($jsonObject->provaTrabalho);
         $arquivo->setNumero($jsonObject->numero);
         $arquivo->setSubstitutiva($jsonObject->substitutiva);
@@ -70,7 +104,7 @@ class ProvaTrabalhoController extends Controller{
         $arquivo->setMateria($jsonObject->materia);
         $arquivo->setProfessor($jsonObject->professor);
         $arquivo->setUsuario($jsonObject->usuario);
-        
+
         if($arquivo->update()){
             $response->setJsonContent(array("status" => "OK"));
         }else{
@@ -83,20 +117,20 @@ class ProvaTrabalhoController extends Controller{
         }
         return $response;
     }
-    
+
     public function delete($id){
         $arquivo = ProvaTrabalho::findFirst($id);
         $response = new Response();
         $response->setContentType("application/json", "UTF-8");
-        
+
         if(!$arquivo){
             $response->setStatusCode(404, "Not Found")
                      ->setJsonContent(array("status" => "NOT-FOUND"));
             return $response;
         }
-        
+
         $filePath = $arquivo->getArquivo();
-        
+
         if($arquivo->delete()){
             unlink("..".$filePath);
             $response->setJsonContent(array("status" => "OK"));
@@ -108,11 +142,11 @@ class ProvaTrabalhoController extends Controller{
             }
             $response->setJsonContent(array('status' => 'ERROR', 'messages' => $errors));
         }
-        
+
         return $response;
     }
-    
-    public function search($provaTrabalho="", $materia="", $professor="", 
+
+    public function search($provaTrabalho="", $materia="", $professor="",
                             $ano=0, $semestre=0){
         $provaTrabalho = trim($provaTrabalho);
         $materia = trim($materia);
@@ -130,15 +164,15 @@ class ProvaTrabalhoController extends Controller{
         $professor      ? $bind["professor"] = "%".$professor."%" : "";
         $ano            ? $bind["ano"] = $ano : "";
         $semestre       ? $bind["semestre"] = $semestre : "";
-        
+
         //provas e trabalhos
         $arquivos = ProvaTrabalho::find(array(
             "conditions"    => $conditions,
             "bind"          => $bind
         ));
-        
+
         $data = array();
-        
+
         foreach($arquivos as $arquivo){
             $materia = ($arquivo->getMateria()? $arquivo->getMateria() : null);
             $professor = ($arquivo->getProfessor()? $arquivo->getProfessor() : null);
@@ -156,17 +190,17 @@ class ProvaTrabalhoController extends Controller{
                 "usuario"       => $usuario
             );
         }
-        
+
         $response = new Response();
         $response->setContent(json_encode($data))
                  ->setContentType("application/json", "UTF-8");
         return $response;
     }
-    
+
     public function upload(){
         $response = new Response();
         $response->setContentType("application/json", "UTF-8");
-        
+
         if($this->request->hasFiles()){
             $files = array();
             foreach($this->request->getUploadedFiles() as $file){
@@ -178,11 +212,11 @@ class ProvaTrabalhoController extends Controller{
             $response->setContent(json_encode($data));
             return $response;
         }
-        
+
         return $response->setStatusCode(409, "Conflict")
                         ->setJsonContent(array("status" => "NO-FILES"));
     }
-    
+
     private function saveFile($file){
         //echo $file->getName()." ".$file->getSize()."\n";
         $nome = $file->getName();
@@ -190,7 +224,7 @@ class ProvaTrabalhoController extends Controller{
         $extensao = strtolower($extensao);
         $errors = array();
         $id = -1;
-        
+
         if(strstr('.jpg;.jpeg;.gif;.png', $extensao)){
             $novoNome = md5(microtime()).$extensao;
             $destino = $this->uploadDir.$novoNome;
@@ -213,7 +247,7 @@ class ProvaTrabalhoController extends Controller{
         }else{
             $errors[] = "O arquivo não é suportado no momento";
         }
-        
+
         return array(
             "name"      => $nome,
             "id"        => $id,
@@ -221,7 +255,7 @@ class ProvaTrabalhoController extends Controller{
             "errors"    => $errors
         );
     }
-    
+
 }
 
 ?>
