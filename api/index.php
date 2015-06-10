@@ -30,7 +30,7 @@ $di->set('db', function(){
         "password"  => "",
         "dbname"    => "farolDB",
         "charset"   => "utf8"
-    )); 
+    ));
 });
 
 $app = new Micro($di);
@@ -47,7 +47,7 @@ $app->before(function() use ($app) {
     $app->response->send();
 });
 
-$app->options('/{catch:(.*)}', function() use ($app) { 
+$app->options('/{catch:(.*)}', function() use ($app) {
     $response = new Response();
     $response->setStatusCode(200, "OK");
     return $response;
@@ -62,23 +62,23 @@ $eventManager->attach('micro', function($event, $app) {
         *  a rota necessita de autenticação e se os dados do usuário estão corretos,
         *  caso seja necessário
         */
-        
+
         $usuario = null;
         $method = $app->__get('request')->getMethod();
         $route = $app->getRouter()->getRewriteUri();
-        
+
         // Basic Auth
         if($app->request->getServer("PHP_AUTH_USER")) {
             $email = $app->request->getServer("PHP_AUTH_USER");
             $password = $app->request->getServer("PHP_AUTH_PW");
             $usuario = UsuarioController::userExists($email, $password);
         }
-        
+
         // Todas as requisições OPTIONS, retornam true
         if($method == "OPTIONS") {
             return true;
         }
-        
+
         // Requisições GET retornam true, exceto algumas rotas
         if($method == "GET") {
             if(startsWith($route, "/v1/arquivos/status")) {
@@ -87,33 +87,28 @@ $eventManager->attach('micro', function($event, $app) {
                     return false;
                 }
             }
-            
+
             if(startsWith($route, "/v1/u")) {
                 if(!$usuario || !$usuario->isAdmin()) {
                     $app->response->setStatusCode(401, "UNAUTHORIZED")->send();
                     return false;
                 }
             }
-            
+
             return true;
         }
-        
+
         // Requisições do tipo POST e PUT só podem ser feitas por moderadores, com exceções
         if($method == "POST" || $method == "PUT"){
             if(startsWith($route, "/v1/u/login")) {
                 return true;
             }
-            
+
             if(!$usuario) {
                 $app->response->setStatusCode(401, "UNAUTHORIZED")->send();
                 return false;
             }
-            
-            if(startsWith($route, "/v1/arquivos")) {
-                $app->response->setStatusCode(401, "UNAUTHORIZED")->send();
-                return false;
-            }
-            
+
             if(startsWith($route, "/v1/u")) {
                 $id = $app->getRouter()->getMatches()[1];
                 // Somente o próprio usuário ou um admin pode alterar um usuário
@@ -122,20 +117,20 @@ $eventManager->attach('micro', function($event, $app) {
                     return false;
                 }
             }
-            
+
             if(!$usuario->isModerador()) {
                 $app->response->setStatusCode(401, "UNAUTHORIZED")->send();
                 return false;
             }
-            
+
             return true;
         }
-        
+
         // Requisições do tipo DELETE só podem ser feitas por moderadores
         if($method == "DELETE" && $usuario->isAdmin()) {
             return true;
         }
-        
+
         // Qualquer outra coisa e retornamos 401
         $app->response->setStatusCode(401, "UNAUTHORIZED")->send();
         return false;

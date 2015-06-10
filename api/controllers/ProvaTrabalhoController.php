@@ -30,7 +30,8 @@ class ProvaTrabalhoController extends Controller{
         foreach(ProvaTrabalho::find("status = '$status'") as $arquivo){
             $materia = ($arquivo->getMateria()? $arquivo->getMateria() : null);
             $professor = ($arquivo->getProfessor()? $arquivo->getProfessor() : null);
-            $usuario = ($arquivo->getUsuario()? $arquivo->getUsuario()->setSenha('') : null);
+            $usuario = ($arquivo->getUsuario()? $arquivo->getUsuario() : null);
+
             $data[] = array(
                 "id"            => $arquivo->getId(),
                 "provaTrabalho" => $arquivo->getProvaTrabalho(),
@@ -154,10 +155,10 @@ class ProvaTrabalhoController extends Controller{
         $ano = ($ano == " " ? 0 : $ano);
         $conditions = ($provaTrabalho ? "provaTrabalho = :provaTrabalho: AND " : "")
                      .($materia ? "tbMateria_codigo LIKE :materia: AND " : "1 = 1 AND ")
-                     .($professor ? "tbProfessor_codigo LIKE :professor? AND " : "1=1 AND ")
+                     .($professor ? "tbProfessor_codigo LIKE :professor: AND " : "1=1 AND ")
                      .($ano ? "ano = :ano: AND " : "1=1 AND ")
-                     .($semestre ? "semestre = :semestre: " : "1=1 ")
-                     ."status = 'aprovado'";
+                     .($semestre ? "semestre = :semestre: AND" : "1=1 AND")
+                     ." status = 'aprovado' ";
         $bind = array();
         $provaTrabalho  ? $bind["provaTrabalho"] = $provaTrabalho : "";
         $materia        ? $bind["materia"] = "%".$materia."%" : "";
@@ -176,7 +177,7 @@ class ProvaTrabalhoController extends Controller{
         foreach($arquivos as $arquivo){
             $materia = ($arquivo->getMateria()? $arquivo->getMateria() : null);
             $professor = ($arquivo->getProfessor()? $arquivo->getProfessor() : null);
-            $usuario = ($arquivo->getUsuario()? $arquivo->getUsuario()->setSenha('') : null);
+            $usuario = ($arquivo->getUsuario()? $arquivo->getUsuario() : null);
             $data[] = array(
                 "id"            => $arquivo->getId(),
                 "provaTrabalho" => $arquivo->getProvaTrabalho(),
@@ -225,6 +226,7 @@ class ProvaTrabalhoController extends Controller{
         $errors = array();
         $id = -1;
 
+        $usuario = Usuario::findFirstByEmail($this->app->request->getServer("PHP_AUTH_USER"));
         if(strstr('.jpg;.jpeg;.gif;.png', $extensao)){
             $novoNome = md5(microtime()).$extensao;
             $destino = $this->uploadDir.$novoNome;
@@ -234,6 +236,7 @@ class ProvaTrabalhoController extends Controller{
                 $arquivo->setArquivo("/uploads/".$novoNome);
                 $arquivo->setImagem($extensao != ".pdf");
                 $arquivo->setStatus(ProvaTrabalho::PENDENTE);
+                $arquivo->setUsuario($usuario->getId());
                 if(!$arquivo->save()){
                     foreach($arquivo->getMessages() as $message){
                         $errors[] = $message->getMessage();
@@ -252,7 +255,8 @@ class ProvaTrabalhoController extends Controller{
             "name"      => $nome,
             "id"        => $id,
             "error"     => (count($errors) > 0),
-            "errors"    => $errors
+            "errors"    => $errors,
+            "usuario"   => $usuario
         );
     }
 
