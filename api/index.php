@@ -127,7 +127,7 @@ $eventManager->attach('micro', function($event, $app) {
         }
 
         // Requisições do tipo DELETE só podem ser feitas por moderadores
-        if($method == "DELETE" && $usuario->isAdmin()) {
+        if($method == "DELETE" && $usuario->isModerador()) {
             return true;
         }
 
