@@ -1,6 +1,9 @@
 # Titanic
 ### API REST para repositório de provas e trabalhos
 
+## Aviso :exclamation: :exclamation: :exclamation:
+O projeto Titanic foi descontinuado. A API do [Farol](http://pet.inf.ufpr.br/farol/) agora é o projeto [Porto](https://github.com/PETComputacaoUFPR/Porto).
+
 [![Join the chat at https://gitter.im/PETComputacaoUFPR/Titanic](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/PETComputacaoUFPR/Titanic?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
 [![Issues](https://img.shields.io/github/issues/PETComputacaoUFPR/Titanic.svg?style=flat-square)](https://github.com/PETComputacaoUFPR/Titanic/issues)
